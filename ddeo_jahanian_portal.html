@@ -1,0 +1,2540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DDEO (EE-M) Jahanian - School Monitoring & Management Portal</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            deose: {
+              header: '#1e3a8a',
+              dark: '#0f172a',
+              primary: '#0284c7',
+              accent: '#16a34a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      .print-only { display: block !important; }
+      body { background: white !important; color: black !important; font-size: 10pt; }
+    }
+    .print-only { display: none; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col antialiased">
+
+  <!-- TOP DEOSE-STYLE BLUE BANNER -->
+  <header class="bg-[#1e3a8a] text-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <button id="mobileMenuBtn" onclick="toggleSidebar()" class="lg:hidden text-white p-2 rounded hover:bg-blue-900 focus:outline-none">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+        <div class="flex items-center space-x-2.5">
+          <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-blue-900 font-black shadow border border-amber-400">
+            <i class="fa-solid fa-graduation-cap text-xl"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs uppercase tracking-widest font-black bg-amber-400 text-slate-900 px-1.5 py-0.5 rounded text-[10px]">PUNJAB SED</span>
+              <span class="text-xs font-bold text-blue-200">TEHSIL JAHANIAN</span>
+            </div>
+            <h1 class="text-sm sm:text-base md:text-lg font-black tracking-tight leading-tight">
+              DY. DEO (EE-M) JAHANIAN PORTAL
+            </h1>
+          </div>
+        </div>
+      </div>
+
+      <!-- Designated Leadership Tag -->
+      <div class="flex items-center space-x-2">
+        <div class="hidden md:block text-right border-r border-blue-700/80 pr-3 mr-1 text-xs">
+          <p class="text-amber-300 font-bold leading-tight flex items-center justify-end gap-1">
+            <i class="fa-solid fa-user-shield text-[10px]"></i> Dr. Muhammad Salim Akhter
+          </p>
+          <p class="text-[11px] text-blue-200">Dy. DEO (EE-M) Jahanian</p>
+          <p class="text-[10px] text-emerald-300 font-medium">IT & Budget: Syed Hassan Aslam</p>
+        </div>
+        <div id="authTopSlot" class="flex items-center">
+          <!-- Auth state rendered dynamically -->
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- TOAST NOTIFICATIONS -->
+  <div id="toastBox" class="fixed top-16 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+  <!-- MAIN WRAPPER -->
+  <main class="flex-1 flex flex-col">
+
+    <!-- ==================== VIEW 1: AUTHENTICATION / LOGIN ==================== -->
+    <div id="authView" class="max-w-4xl mx-auto px-4 py-8 flex-1 flex flex-col justify-center w-full">
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200 grid md:grid-cols-5">
+        
+        <!-- Left Visual Info Box -->
+        <div class="md:col-span-2 bg-gradient-to-br from-[#1e3a8a] to-slate-900 text-white p-6 sm:p-8 flex flex-col justify-between">
+          <div>
+            <div class="inline-flex items-center gap-1.5 bg-amber-400/20 text-amber-300 border border-amber-400/30 px-2.5 py-0.5 rounded-full text-xs font-semibold mb-4">
+              <i class="fa-solid fa-shield-halved text-[10px]"></i> Secure Education Network
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black mb-2">School & Accounts Portal</h2>
+            <p class="text-xs text-blue-100 leading-relaxed mb-6">
+              Official portal for Office of the Deputy District Education Officer (EE-M) Tehsil Jahanian, District Khanewal.
+            </p>
+
+            <div class="space-y-3 bg-white/10 p-3.5 rounded-xl border border-white/10 text-xs">
+              <p class="font-bold text-amber-300 uppercase text-[10px] tracking-wider">Designated Supervisory Officers</p>
+              <div class="border-b border-white/10 pb-2">
+                <p class="font-semibold text-white">Markaz Jahanian-Male (16 Schools)</p>
+                <p class="text-blue-200 text-[11px]"><i class="fa-solid fa-user-tie text-amber-400 mr-1"></i> AEO Muhammad Iftikhar Shahid</p>
+                <p class="text-amber-300 font-mono text-[10px]"><i class="fa-solid fa-phone mr-1"></i> 0300-6881239</p>
+              </div>
+              <div>
+                <p class="font-semibold text-white">Markaz Thatha Sadiq Abad-Male (14 Schools)</p>
+                <p class="text-blue-200 text-[11px]"><i class="fa-solid fa-user-tie text-amber-400 mr-1"></i> AEO Sajid Ali Gill</p>
+                <p class="text-amber-300 font-mono text-[10px]"><i class="fa-solid fa-phone mr-1"></i> 0308-5732719</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-blue-800 text-[11px] text-blue-200 space-y-1">
+            <p class="font-bold text-amber-300">Competent Authority: Dr. Muhammad Salim Akhter</p>
+            <p class="text-[10px] text-slate-300">In-charge IT, Budget & Accounts: Syed Hassan Aslam</p>
+          </div>
+        </div>
+
+        <!-- Right Login Panels -->
+        <div class="md:col-span-3 p-6 sm:p-8 flex flex-col justify-center bg-slate-50">
+          <div class="flex border-b border-slate-200 mb-6">
+            <button id="tabHeadLoginBtn" onclick="switchLoginMode('head')" class="flex-1 pb-3 text-xs sm:text-sm font-bold border-b-2 border-blue-700 text-blue-900 flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-school"></i> School (Headmaster)
+            </button>
+            <button id="tabAdminLoginBtn" onclick="switchLoginMode('admin')" class="flex-1 pb-3 text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-lock"></i> Central Admin (DDEO)
+            </button>
+          </div>
+
+          <!-- HEADMASTER LOGIN FORM -->
+          <div id="headLoginSection" class="space-y-4">
+            <form onsubmit="handleHeadLogin(event)" class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">8-Digit School EMIS Code *</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-hashtag"></i></span>
+                  <input type="text" id="headEmisInput" required pattern="[0-9]{8}" placeholder="e.g. 36440080" class="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-600 bg-white text-sm font-mono font-bold">
+                </div>
+                <div class="flex items-center justify-between mt-1 text-[11px] text-slate-500">
+                  <span>Demo EMIS: <strong class="cursor-pointer text-blue-700 font-mono" onclick="document.getElementById('headEmisInput').value='36440080'">36440080</strong> (GMS Jahanian)</span>
+                  <button type="button" onclick="openForgotPwdModal()" class="text-blue-700 font-bold hover:underline">Forgot / Change Password?</button>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Headmaster Password *</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-key"></i></span>
+                  <input type="password" id="headPassInput" required value="123456" placeholder="••••••" class="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-600 bg-white text-sm font-bold">
+                </div>
+                <p class="text-[10px] text-slate-400 mt-1">Default temporary password for all heads: <strong class="font-mono text-slate-600">123456</strong></p>
+              </div>
+
+              <button type="submit" class="w-full bg-[#1e3a8a] hover:bg-blue-900 text-white font-bold py-2.5 rounded-lg shadow-md transition flex items-center justify-center gap-2 text-sm">
+                <i class="fa-solid fa-right-to-bracket"></i> Login to School Portal
+              </button>
+            </form>
+          </div>
+
+          <!-- ADMIN STRICT LOGIN FORM -->
+          <div id="adminLoginSection" class="space-y-4 hidden">
+            <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-900 flex items-center gap-2">
+              <i class="fa-solid fa-shield-cat text-amber-600 text-base"></i>
+              <span>Restricted Access: Strictly authorized for designated administrator mobile number: <strong>0306-6245287</strong></span>
+            </div>
+
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Admin Authorized Mobile No. *</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-mobile-screen-button"></i></span>
+                  <input type="tel" id="adminPhoneInput" required value="0306-6245287" class="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-600 bg-white text-sm font-mono font-bold">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Admin Security PIN / Password *</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-lock"></i></span>
+                  <input type="password" id="adminPinInput" required placeholder="Enter Admin PIN" value="1122" class="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-600 bg-white text-sm font-bold">
+                </div>
+                <p class="text-[10px] text-slate-500 mt-1">Default secure PIN for 0306-6245287: <strong class="font-mono text-slate-700">1122</strong></p>
+              </div>
+
+              <button type="submit" class="w-full bg-slate-900 hover:bg-black text-white font-bold py-2.5 rounded-lg shadow-md transition flex items-center justify-center gap-2 text-sm">
+                <i class="fa-solid fa-user-lock"></i> Verify &amp; Access Admin Console
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== VIEW 2: LOGGED-IN PORTAL (ADMIN & SCHOOL) ==================== -->
+    <div id="portalView" class="flex-1 flex flex-col lg:flex-row hidden">
+
+      <!-- LEFT SIDEBAR / DRAWER (DEOSE KHANEWAL STRUCTURE) -->
+      <aside id="sidebar" class="w-full lg:w-72 bg-white border-r border-slate-200 no-print flex flex-col justify-between shrink-0 shadow-sm">
+        <div class="p-3 sm:p-4 space-y-3">
+          <!-- Active Context Card -->
+          <div id="sessionCard" class="p-3 bg-blue-50 border border-blue-200 rounded-xl">
+            <!-- Dynamic session badge -->
+          </div>
+
+          <!-- School Nav Items (DEOSE Khanewal Menu) -->
+          <div id="schoolNavMenu" class="space-y-1 text-xs">
+            <button onclick="setSchoolSection('dashboard')" class="school-nav-btn w-full flex items-center px-3 py-2 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition" data-sec="dashboard">
+              <i class="fa-solid fa-desktop w-5 text-blue-700"></i> Dashboard
+            </button>
+            <button onclick="setSchoolSection('attendance')" class="school-nav-btn w-full flex items-center px-3 py-2 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition" data-sec="attendance">
+              <i class="fa-solid fa-clipboard-check w-5 text-emerald-600"></i> Daily Attendance &amp; Enr.
+            </button>
+            <button onclick="setSchoolSection('teaching')" class="school-nav-btn w-full flex items-center px-3 py-2 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition" data-sec="teaching">
+              <i class="fa-solid fa-chalkboard-user w-5 text-indigo-600"></i> Teaching Statement
+            </button>
+            <button onclick="setSchoolSection('nonteaching')" class="school-nav-btn w-full flex items-center px-3 py-2 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition" data-sec="nonteaching">
+              <i class="fa-solid fa-users-gear w-5 text-amber-600"></i> Non Teaching Statement
+            </button>
+            <button onclick="setSchoolSection('vacancy_t')" class="school-nav-btn w-full flex items-center px-3 py-2 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition" data-sec="vacancy_t">
+              <i class="fa-solid fa-file-signature w-5 text-sky-600"></i> Vacancy Teaching Staff
+            </button>
+            <button onclick="setSchoolSection('vacancy_nt')" class="school-nav-btn w-full flex items-center px-3 py-2 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition" data-sec="vacancy_nt">
+              <i class="fa-solid fa-id-card-clip w-5 text-teal-600"></i> Vacancy Non Teaching
+            </button>
+            <button onclick="setSchoolSection('cost_center')" class="school-nav-btn w-full flex items-center px-3 py-2 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition" data-sec="cost_center">
+              <i class="fa-solid fa-building-circle-check w-5 text-slate-600"></i> Cost Center
+            </button>
+            <button onclick="setSchoolSection('antidengue')" class="school-nav-btn w-full flex items-center px-3 py-2 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition" data-sec="antidengue">
+              <i class="fa-solid fa-shield-virus w-5 text-red-600"></i> Anti-Dengue
+            </button>
+            <button onclick="setSchoolSection('results')" class="school-nav-btn w-full flex items-center px-3 py-2 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition" data-sec="results">
+              <i class="fa-solid fa-square-poll-vertical w-5 text-purple-600"></i> School Result
+            </button>
+
+            <!-- Dropdown-Style Section: School Information -->
+            <div class="pt-2">
+              <div class="text-[10px] font-black uppercase text-slate-400 px-3 tracking-wider">School Information</div>
+              <button onclick="setSchoolSection('school_info')" class="school-nav-btn w-full flex items-center px-3 py-2 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition" data-sec="school_info">
+                <i class="fa-solid fa-circle-info w-5 text-blue-600"></i> General Information
+              </button>
+              <button onclick="setSchoolSection('building')" class="school-nav-btn w-full flex items-center px-3 py-2 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition" data-sec="building">
+                <i class="fa-solid fa-school-flag w-5 text-amber-700"></i> School Building Record
+              </button>
+              <button onclick="setSchoolSection('accounts')" class="school-nav-btn w-full flex items-center px-3 py-2 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition" data-sec="accounts">
+                <i class="fa-solid fa-sack-dollar w-5 text-emerald-700"></i> NSB &amp; FTF Accounts
+              </button>
+              <button onclick="setSchoolSection('labs')" class="school-nav-btn w-full flex items-center px-3 py-2 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition" data-sec="labs">
+                <i class="fa-solid fa-flask-vial w-5 text-cyan-600"></i> School Labs
+              </button>
+            </div>
+          </div>
+
+          <!-- Admin Central Nav Items -->
+          <div id="adminNavMenu" class="space-y-1 text-xs hidden">
+            <button onclick="setAdminSection('tehsil_overview')" class="admin-nav-btn w-full flex items-center px-3 py-2.5 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition" data-sec="tehsil_overview">
+              <i class="fa-solid fa-chart-line w-6 text-blue-700"></i> Tehsil Monitoring Desk
+            </button>
+            <button onclick="setAdminSection('schools_directory')" class="admin-nav-btn w-full flex items-center px-3 py-2.5 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition" data-sec="schools_directory">
+              <i class="fa-solid fa-network-wired w-6 text-emerald-700"></i> 30 Schools Inspection (Click School)
+            </button>
+            <button onclick="setAdminSection('admin_accounts')" class="admin-nav-btn w-full flex items-center px-3 py-2.5 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition" data-sec="admin_accounts">
+              <i class="fa-solid fa-coins w-6 text-amber-600"></i> Tehsil NSB / FTF Consolidation
+            </button>
+            <button onclick="setAdminSection('admin_reports')" class="admin-nav-btn w-full flex items-center px-3 py-2.5 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition" data-sec="admin_reports">
+              <i class="fa-solid fa-print w-6 text-purple-700"></i> Verified Gazettes &amp; Reports
+            </button>
+          </div>
+        </div>
+
+        <!-- Sidebar Sign-off / Logout -->
+        <div class="p-3 border-t border-slate-200 bg-slate-50 text-[11px] space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-slate-500">Security Access</span>
+            <span class="font-bold text-emerald-700 flex items-center gap-1"><i class="fa-solid fa-circle-check text-[9px]"></i> Authenticated</span>
+          </div>
+          <button onclick="handleLogout()" class="w-full py-2 bg-red-50 hover:bg-red-100 text-red-700 font-bold rounded-lg border border-red-200 flex items-center justify-center gap-1.5 transition">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+          </button>
+        </div>
+      </aside>
+
+      <!-- RIGHT WORKSPACE SECTION -->
+      <section class="flex-1 p-3 sm:p-5 lg:p-7 overflow-y-auto max-w-7xl mx-auto w-full">
+
+        <!-- ==================== SCHOOL SECTIONS ==================== -->
+        <div id="schoolWorkspace" class="space-y-6">
+
+          <!-- 1. School Dashboard -->
+          <div id="schoolSec_dashboard" class="school-sec-pane space-y-5">
+            <div class="bg-white p-4 sm:p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+              <div>
+                <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-blue-100 text-blue-900" id="dashLevelBadge">Middle</span>
+                <h2 class="text-lg sm:text-xl font-black text-slate-900 mt-1" id="dashSchoolName">School Name</h2>
+                <p class="text-xs text-slate-500" id="dashSchoolSubtitle">Markaz Jahanian-Male | EMIS: 36440080</p>
+              </div>
+              <div class="flex flex-wrap gap-2 text-xs">
+                <button onclick="setSchoolSection('attendance')" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg shadow"><i class="fa-solid fa-pen-to-square mr-1"></i> Submit Daily Att.</button>
+                <button onclick="setSchoolSection('accounts')" class="px-3 py-1.5 bg-[#1e3a8a] hover:bg-blue-900 text-white font-bold rounded-lg shadow"><i class="fa-solid fa-receipt mr-1"></i> NSB/FTF Return</button>
+              </div>
+            </div>
+
+            <!-- Dashboard Summary Stat Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4" id="dashStatsGrid">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- Welcome Message Box Matching DEOSE Khanewal Screenshot -->
+            <div class="bg-white p-5 rounded-xl border border-red-200 shadow-sm border-l-4 border-l-red-600">
+              <h3 class="text-sm font-bold text-slate-800 mb-1">Dear Sir/Madam, Welcome to the School Portal (EE-M) Tehsil Jahanian</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Please maintain your school's daily attendance (Students, Teaching &amp; Non-Teaching Staff), verify current student enrollment, update physical assets, and submit your monthly NSB/FTF accounts return.
+              </p>
+              <div class="mt-3 text-[11px] text-slate-500 flex items-center justify-between border-t border-slate-100 pt-2">
+                <span>Supervisory AEO: <strong id="dashAeoName" class="text-slate-700">AEO Name</strong></span>
+                <span>In-Charge IT & Accounts: <strong class="text-slate-700">Syed Hassan Aslam</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Daily Attendance & Enrollment Entry (Crucial: User enters current enrollment) -->
+          <div id="schoolSec_attendance" class="school-sec-pane hidden space-y-5">
+            <div class="bg-white p-4 sm:p-5 rounded-xl shadow-sm border border-slate-200">
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-100 pb-3 mb-4 gap-2">
+                <div>
+                  <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-clipboard-user text-emerald-700"></i> Daily Attendance &amp; Current Enrollment Submission
+                  </h3>
+                  <p class="text-xs text-slate-500">Zero pre-assumed enrollment: Enter actual student and staff numbers</p>
+                </div>
+                <div class="text-xs bg-blue-50 text-blue-800 font-mono px-2.5 py-1 rounded font-bold border border-blue-200" id="attCurrentDate">
+                  Date: Today
+                </div>
+              </div>
+
+              <form onsubmit="handleDailyAttendanceSubmit(event)" class="space-y-4">
+                <!-- Current Enrollment & Student Attendance -->
+                <div class="p-4 bg-emerald-50/60 rounded-xl border border-emerald-200 space-y-3">
+                  <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-900 flex items-center gap-1.5">
+                    <i class="fa-solid fa-users text-emerald-700"></i> 1. Student Enrollment &amp; Attendance
+                  </h4>
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                      <label class="block text-xs font-bold text-slate-700 mb-1">Current Enrolled Students *</label>
+                      <input type="number" id="inputAttEnrolled" required min="1" placeholder="Enter actual enrollment" oninput="calculateAttendanceLive()" class="w-full p-2.5 rounded-lg border border-slate-300 text-sm font-bold bg-white">
+                    </div>
+                    <div>
+                      <label class="block text-xs font-bold text-emerald-800 mb-1">Students Present Today *</label>
+                      <input type="number" id="inputAttPresent" required min="0" placeholder="Present count" oninput="calculateAttendanceLive()" class="w-full p-2.5 rounded-lg border border-slate-300 text-sm font-bold bg-white">
+                    </div>
+                    <div>
+                      <label class="block text-xs font-bold text-red-700 mb-1">Students Absent Today</label>
+                      <input type="number" id="inputAttAbsent" readonly class="w-full p-2.5 rounded-lg border border-slate-200 bg-slate-100 text-sm font-bold text-red-700">
+                    </div>
+                  </div>
+                  <div class="text-xs font-bold text-emerald-900 pt-1" id="studentAttPercentLabel">Turnout: 0%</div>
+                </div>
+
+                <!-- Teaching Staff Attendance -->
+                <div class="p-4 bg-indigo-50/60 rounded-xl border border-indigo-200 space-y-3">
+                  <h4 class="text-xs font-bold uppercase tracking-wider text-indigo-900 flex items-center gap-1.5">
+                    <i class="fa-solid fa-chalkboard-user text-indigo-700"></i> 2. Teaching Staff Attendance
+                  </h4>
+                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div>
+                      <label class="block text-[11px] font-bold text-slate-600 mb-1">Sanctioned</label>
+                      <input type="number" id="inputTeachSanctioned" required min="1" class="w-full p-2 rounded border border-slate-300 text-xs font-bold bg-white">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-slate-600 mb-1">Working</label>
+                      <input type="number" id="inputTeachWorking" required min="0" class="w-full p-2 rounded border border-slate-300 text-xs font-bold bg-white">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-emerald-700 mb-1">Present on Duty *</label>
+                      <input type="number" id="inputTeachPresent" required min="0" class="w-full p-2 rounded border border-slate-300 text-xs font-bold bg-white">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-amber-700 mb-1">On Leave / Deputation</label>
+                      <input type="number" id="inputTeachLeave" min="0" value="0" class="w-full p-2 rounded border border-slate-300 text-xs font-bold bg-white">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Non-Teaching Staff Attendance -->
+                <div class="p-4 bg-amber-50/60 rounded-xl border border-amber-200 space-y-3">
+                  <h4 class="text-xs font-bold uppercase tracking-wider text-amber-900 flex items-center gap-1.5">
+                    <i class="fa-solid fa-users-gear text-amber-700"></i> 3. Non-Teaching Staff Attendance
+                  </h4>
+                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div>
+                      <label class="block text-[11px] font-bold text-slate-600 mb-1">Sanctioned</label>
+                      <input type="number" id="inputNonTeachSanctioned" min="0" value="2" class="w-full p-2 rounded border border-slate-300 text-xs font-bold bg-white">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-slate-600 mb-1">Working</label>
+                      <input type="number" id="inputNonTeachWorking" min="0" value="2" class="w-full p-2 rounded border border-slate-300 text-xs font-bold bg-white">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-emerald-700 mb-1">Present on Duty *</label>
+                      <input type="number" id="inputNonTeachPresent" min="0" value="2" class="w-full p-2 rounded border border-slate-300 text-xs font-bold bg-white">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-amber-700 mb-1">On Leave</label>
+                      <input type="number" id="inputNonTeachLeave" min="0" value="0" class="w-full p-2 rounded border border-slate-300 text-xs font-bold bg-white">
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg shadow transition flex items-center justify-center gap-2 text-sm">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> Submit Today's Attendance to DDEO Office
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- 3. Teaching Statement (Exact DEOSE Khanewal Table Layout) -->
+          <div id="schoolSec_teaching" class="school-sec-pane hidden space-y-4">
+            <div class="bg-white p-4 sm:p-5 rounded-xl shadow-sm border border-slate-200">
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-slate-200 gap-2">
+                <div>
+                  <h3 class="text-base font-bold text-slate-900">Schools Portal (Teaching Staff)</h3>
+                  <p class="text-xs text-slate-500">Official Teaching Staff Register &amp; Verification</p>
+                </div>
+                <div class="flex gap-2">
+                  <button onclick="openAddTeacherModal()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded shadow"><i class="fa-solid fa-plus mr-1"></i> Add Teacher</button>
+                  <button onclick="window.print()" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded shadow"><i class="fa-solid fa-print mr-1"></i> Print Statement</button>
+                </div>
+              </div>
+
+              <!-- Table -->
+              <div class="overflow-x-auto mt-4">
+                <table class="w-full text-xs text-left border-collapse">
+                  <thead class="bg-slate-50 text-slate-600 uppercase border-b border-t border-slate-200 font-bold">
+                    <tr>
+                      <th class="p-2.5">Sr No.</th>
+                      <th class="p-2.5">Name / Father</th>
+                      <th class="p-2.5">Designation</th>
+                      <th class="p-2.5">BPS</th>
+                      <th class="p-2.5">PIC</th>
+                      <th class="p-2.5 text-center">Options</th>
+                    </tr>
+                  </thead>
+                  <tbody id="teachingStaffTableBody" class="divide-y divide-slate-100">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Certificate Sign-off Box matching screenshot -->
+              <div class="mt-6 p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-2">
+                <p class="text-slate-600">
+                  It is certified that I have completed data updation of Teaching Staff in website on <strong class="text-red-600" id="certDateSpan">05/10/2026</strong> and data is up to date according to school record.
+                </p>
+                <p class="font-bold text-slate-800 uppercase" id="certHeadSign">HEAD TEACHER SIGNATURE</p>
+                <button onclick="showToast('Verification Certificate submitted to Dy. DEO Office!')" class="mt-2 px-4 py-1.5 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded shadow">
+                  Send Certificate
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Non-Teaching Statement -->
+          <div id="schoolSec_nonteaching" class="school-sec-pane hidden space-y-4">
+            <div class="bg-white p-4 sm:p-5 rounded-xl shadow-sm border border-slate-200">
+              <div class="flex justify-between items-center pb-3 border-b border-slate-200">
+                <h3 class="text-base font-bold text-slate-900">Schools Portal (Non-Teaching Staff)</h3>
+                <button onclick="openAddNonTeacherModal()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded shadow"><i class="fa-solid fa-plus mr-1"></i> Add Non-Teaching Staff</button>
+              </div>
+              <div class="overflow-x-auto mt-4">
+                <table class="w-full text-xs text-left">
+                  <thead class="bg-slate-50 text-slate-600 uppercase border-b border-t border-slate-200 font-bold">
+                    <tr>
+                      <th class="p-2.5">Sr.</th>
+                      <th class="p-2.5">Name / Father</th>
+                      <th class="p-2.5">Designation (Naib Qasid / Chowkidar / Mali)</th>
+                      <th class="p-2.5">BPS</th>
+                      <th class="p-2.5">Contact No</th>
+                      <th class="p-2.5 text-center">Options</th>
+                    </tr>
+                  </thead>
+                  <tbody id="nonTeachingStaffTableBody" class="divide-y divide-slate-100">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Vacancy Teaching Staff (DEOSE Khanewal Screenshot Match) -->
+          <div id="schoolSec_vacancy_t" class="school-sec-pane hidden space-y-4">
+            <div class="bg-white p-4 sm:p-5 rounded-xl shadow-sm border border-slate-200">
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-slate-200 gap-2">
+                <div>
+                  <h3 class="text-base font-bold text-slate-900">Schools Portal (Vacancy Position Teaching Staff)</h3>
+                  <p class="text-xs text-slate-500">Sanctioned vs Working vs Vacancy Ledger</p>
+                </div>
+                <div class="flex gap-2">
+                  <button onclick="openAddVacancyModal('teaching')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded shadow"><i class="fa-solid fa-plus mr-1"></i> Add New Vacancy</button>
+                  <button onclick="window.print()" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded shadow"><i class="fa-solid fa-download mr-1"></i> Download Vacancy</button>
+                </div>
+              </div>
+
+              <div class="overflow-x-auto mt-4">
+                <table class="w-full text-xs text-left border-collapse">
+                  <thead class="bg-slate-50 text-slate-600 uppercase border-b border-t font-bold">
+                    <tr>
+                      <th class="p-2.5">Sr No.</th>
+                      <th class="p-2.5">Name of Post</th>
+                      <th class="p-2.5 text-center">BPS</th>
+                      <th class="p-2.5 text-center">Sanctioned</th>
+                      <th class="p-2.5 text-center">Working</th>
+                      <th class="p-2.5 text-center text-red-600">Vacant</th>
+                      <th class="p-2.5 text-center">Options</th>
+                    </tr>
+                  </thead>
+                  <tbody id="vacancyTeachingTableBody" class="divide-y divide-slate-100">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. Vacancy Non-Teaching Staff -->
+          <div id="schoolSec_vacancy_nt" class="school-sec-pane hidden space-y-4">
+            <div class="bg-white p-4 sm:p-5 rounded-xl shadow-sm border border-slate-200">
+              <div class="flex justify-between items-center pb-3 border-b border-slate-200">
+                <h3 class="text-base font-bold text-slate-900">Vacancy Position (Non-Teaching Staff)</h3>
+                <button onclick="openAddVacancyModal('nonteaching')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded shadow"><i class="fa-solid fa-plus mr-1"></i> Add Vacancy</button>
+              </div>
+              <div class="overflow-x-auto mt-4">
+                <table class="w-full text-xs text-left">
+                  <thead class="bg-slate-50 text-slate-600 uppercase border-b border-t font-bold">
+                    <tr>
+                      <th class="p-2.5">Sr.</th>
+                      <th class="p-2.5">Name of Post</th>
+                      <th class="p-2.5 text-center">BPS</th>
+                      <th class="p-2.5 text-center">Sanctioned</th>
+                      <th class="p-2.5 text-center">Working</th>
+                      <th class="p-2.5 text-center text-red-600">Vacant</th>
+                      <th class="p-2.5 text-center">Options</th>
+                    </tr>
+                  </thead>
+                  <tbody id="vacancyNonTeachingTableBody" class="divide-y divide-slate-100">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. Cost Center & 8. Anti Dengue -->
+          <div id="schoolSec_cost_center" class="school-sec-pane hidden space-y-4">
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 max-w-xl mx-auto space-y-3">
+              <h3 class="text-base font-bold text-slate-800 border-b pb-2">Cost Center Information</h3>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">DDO Code (District Accounts Office Khanewal)</label>
+                <input type="text" id="schoolDdoCode" placeholder="e.g. KC-6246" class="w-full p-2.5 border rounded-lg text-sm font-mono font-bold">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Cost Center Name</label>
+                <input type="text" id="schoolCostCenterName" placeholder="e.g. GMS JAHANIAN KC-6246" class="w-full p-2.5 border rounded-lg text-sm font-bold">
+              </div>
+              <button onclick="saveCostCenter()" class="w-full py-2 bg-blue-800 hover:bg-blue-900 text-white font-bold rounded-lg text-xs shadow">Save Cost Center</button>
+            </div>
+          </div>
+
+          <div id="schoolSec_antidengue" class="school-sec-pane hidden space-y-4">
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 max-w-xl mx-auto space-y-3">
+              <h3 class="text-base font-bold text-slate-800 border-b pb-2 flex items-center gap-2">
+                <i class="fa-solid fa-shield-virus text-red-600"></i> Anti-Dengue Daily Compliance
+              </h3>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Today's Inspection Status</label>
+                <select class="w-full p-2.5 border rounded-lg text-xs font-bold">
+                  <option>Cleanliness Verified - No Standing Water</option>
+                  <option>Roof Cleaned &amp; Water Tanks Covered</option>
+                  <option>Sprayed by Tehsil Council Team</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Dengue Activity User ID / Mobile App Upload</label>
+                <input type="text" placeholder="Android App Activity ID" class="w-full p-2.5 border rounded-lg text-xs">
+              </div>
+              <button onclick="showToast('Anti-Dengue Compliance Logged Successfully!')" class="w-full py-2 bg-red-700 hover:bg-red-800 text-white font-bold rounded-lg text-xs shadow">Submit Anti-Dengue Return</button>
+            </div>
+          </div>
+
+          <!-- 9. School Results -->
+          <div id="schoolSec_results" class="school-sec-pane hidden space-y-4">
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-3">
+              <h3 class="text-base font-bold text-slate-800 border-b pb-2">PEC / Annual School Examination Results</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block text-xs font-bold text-slate-600 mb-1">Class / Grade</label>
+                  <select class="w-full p-2 border rounded text-xs font-bold">
+                    <option>Class 5 (Primary School Exam)</option>
+                    <option>Class 8 (Middle Standard Exam)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-600 mb-1">Appeared Students</label>
+                  <input type="number" placeholder="Appeared" class="w-full p-2 border rounded text-xs">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-600 mb-1">Passed Students</label>
+                  <input type="number" placeholder="Passed" class="w-full p-2 border rounded text-xs">
+                </div>
+              </div>
+              <button onclick="showToast('Examination results saved!')" class="px-4 py-2 bg-purple-700 hover:bg-purple-800 text-white font-bold rounded text-xs shadow">Save Results</button>
+            </div>
+          </div>
+
+          <!-- 10. General School Information (Screenshot 4 Match) -->
+          <div id="schoolSec_school_info" class="school-sec-pane hidden space-y-4">
+            <div class="bg-white p-5 sm:p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
+              <div class="flex justify-between items-center pb-3 border-b">
+                <h3 class="text-base font-black text-slate-900">School Information (General Profile)</h3>
+                <button onclick="saveSchoolGeneralInfo()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded shadow">Update School Info</button>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 text-xs">
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Markaz</label>
+                  <input type="text" id="genInfo_markaz" readonly class="w-full p-2 border rounded bg-slate-100 font-bold">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Mouza</label>
+                  <input type="text" id="genInfo_mouza" placeholder="e.g. CHAK NO 99/10R" class="w-full p-2 border rounded bg-white">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Union Council Name</label>
+                  <input type="text" id="genInfo_ucName" placeholder="e.g. CHAK NO 100/10R" class="w-full p-2 border rounded bg-white">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Union Council Number</label>
+                  <input type="text" id="genInfo_ucNo" placeholder="119" class="w-full p-2 border rounded bg-white font-mono">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Total Population</label>
+                  <input type="number" id="genInfo_pop" placeholder="3500" class="w-full p-2 border rounded bg-white">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">National Assembly (NA) No.</label>
+                  <input type="text" id="genInfo_na" value="NA-147" class="w-full p-2 border rounded bg-white font-mono">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Punjab Assembly (PP) No.</label>
+                  <input type="text" id="genInfo_pp" value="PP-210" class="w-full p-2 border rounded bg-white font-mono">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Police Station Name</label>
+                  <input type="text" id="genInfo_police" value="JAHANIAN" class="w-full p-2 border rounded bg-white">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">School Type</label>
+                  <select id="genInfo_type" class="w-full p-2 border rounded bg-white">
+                    <option value="Rural">Rural</option>
+                    <option value="Urban">Urban</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">School Category</label>
+                  <select id="genInfo_cat" class="w-full p-2 border rounded bg-white">
+                    <option value="Only Boys">Only Boys</option>
+                    <option value="Co-Education">Co-Education</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Area of School in Kanal</label>
+                  <input type="number" id="genInfo_kanal" placeholder="e.g. 6" class="w-full p-2 border rounded bg-white">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Area in Marla</label>
+                  <input type="number" id="genInfo_marla" placeholder="e.g. 10" class="w-full p-2 border rounded bg-white">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Covered Area</label>
+                  <input type="text" id="genInfo_covered" placeholder="e.g. 2 Kanal 5 Marla" class="w-full p-2 border rounded bg-white">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Drinking Water</label>
+                  <select id="genInfo_water" class="w-full p-2 border rounded bg-white">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Resource of Drinking Water</label>
+                  <select id="genInfo_waterRes" class="w-full p-2 border rounded bg-white">
+                    <option value="Electric Pump / Turbine">Electric Pump / Turbine</option>
+                    <option value="Handpump Functional">Handpump Functional</option>
+                    <option value="Water Supply">Water Supply</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Electricity Connection</label>
+                  <select id="genInfo_elec" class="w-full p-2 border rounded bg-white">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">School Working Shift</label>
+                  <select id="genInfo_shift" class="w-full p-2 border rounded bg-white">
+                    <option value="Single Shift">Single Shift (Morning)</option>
+                    <option value="Double Shift">Double Shift</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="pt-3">
+                <button onclick="saveSchoolGeneralInfo()" class="w-full py-2.5 bg-blue-800 hover:bg-blue-900 text-white font-bold rounded-lg text-xs shadow">Update School Information</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 11. School Building Record (Screenshot 5 Match) -->
+          <div id="schoolSec_building" class="school-sec-pane hidden space-y-4">
+            <div class="bg-white p-5 sm:p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
+              <div class="flex justify-between items-center pb-3 border-b">
+                <h3 class="text-base font-black text-slate-900">School Building Record</h3>
+                <button onclick="saveSchoolBuildingInfo()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded shadow">Update Building Info</button>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 text-xs">
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Have Building</label>
+                  <select id="bld_have" class="w-full p-2 border rounded bg-white">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No (Shelterless)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Owner of Building</label>
+                  <input type="text" id="bld_owner" value="Education Department" class="w-full p-2 border rounded bg-white">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Status of School Building</label>
+                  <select id="bld_status" class="w-full p-2 border rounded bg-white">
+                    <option value="Satisfactory Concrete">Satisfactory Concrete</option>
+                    <option value="Few Rooms Concrete">Few Rooms Concrete</option>
+                    <option value="Needs Immediate Repair">Needs Immediate Repair</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Boundary Wall</label>
+                  <select id="bld_wall" class="w-full p-2 border rounded bg-white">
+                    <option value="Completed">Completed</option>
+                    <option value="Partially Built">Partially Built</option>
+                    <option value="No Boundary Wall">No Boundary Wall</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-red-600 mb-1">Dangerous Building / Rooms</label>
+                  <select id="bld_danger" class="w-full p-2 border rounded bg-red-50 text-red-800 font-bold">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes (Critical)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-red-600 mb-1">Dangerous Classrooms Count</label>
+                  <input type="number" id="bld_dangerRooms" min="0" value="0" class="w-full p-2 border rounded bg-red-50 text-red-700 font-bold">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Total Class Rooms</label>
+                  <input type="number" id="bld_totalRooms" min="1" placeholder="8" class="w-full p-2 border rounded bg-white font-bold">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Rooms Used for Teaching</label>
+                  <input type="number" id="bld_teachRooms" min="1" placeholder="5" class="w-full p-2 border rounded bg-white font-bold">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Rooms Used for Office / Store / Labs</label>
+                  <input type="number" id="bld_officeRooms" min="0" placeholder="3" class="w-full p-2 border rounded bg-white font-bold">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Total Toilets</label>
+                  <input type="number" id="bld_toilets" min="0" placeholder="4" class="w-full p-2 border rounded bg-white font-bold">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Toilet Status</label>
+                  <select id="bld_toiletStatus" class="w-full p-2 border rounded bg-white">
+                    <option value="Functional">Functional</option>
+                    <option value="Non-Functional / Choked">Non-Functional / Choked</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">GPS Location (Lat / Long)</label>
+                  <input type="text" id="bld_gps" placeholder="Lat.30.085845 - Long.71.9542" class="w-full p-2 border rounded bg-white font-mono">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Main Gate</label>
+                  <select id="bld_gate" class="w-full p-2 border rounded bg-white">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Emergency Gate</label>
+                  <select id="bld_emGate" class="w-full p-2 border rounded bg-white">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
+                <div class="sm:col-span-2 md:col-span-3">
+                  <label class="block font-bold text-slate-600 mb-1">Building Requirements (New Rooms / Toilets / Lab)</label>
+                  <input type="text" id="bld_req" placeholder="e.g. 2 Additional Classrooms, 1 Science Lab, White wash" class="w-full p-2 border rounded bg-white">
+                </div>
+              </div>
+
+              <div class="pt-3">
+                <button onclick="saveSchoolBuildingInfo()" class="w-full py-2.5 bg-blue-800 hover:bg-blue-900 text-white font-bold rounded-lg text-xs shadow">Update Building Record</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 12. Accounts (Exact Requirement: 3 Core Points + Net Balance Across All Months/Years) -->
+          <div id="schoolSec_accounts" class="school-sec-pane hidden space-y-4">
+            <div class="bg-white p-5 sm:p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-slate-200 gap-2">
+                <div>
+                  <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-sack-dollar text-emerald-700"></i> NSB &amp; FTF Monthly Accounts Return
+                  </h3>
+                  <p class="text-xs text-slate-500">Supervised by: Syed Hassan Aslam (In-Charge IT &amp; Budget/Accounts)</p>
+                </div>
+                <!-- Selection: Fund type, year, month -->
+                <div class="flex flex-wrap gap-2 text-xs">
+                  <select id="accFundSelect" onchange="renderSchoolAccounts()" class="border rounded px-2.5 py-1.5 font-bold text-emerald-800 bg-emerald-50">
+                    <option value="NSB">Non-Salary Budget (NSB)</option>
+                    <option value="FTF">Farogh-e-Taleem Fund (FTF)</option>
+                  </select>
+                  <select id="accYearSelect" onchange="renderSchoolAccounts()" class="border rounded px-2 py-1.5 font-bold">
+                    <option value="2026-2027">FY 2026-2027</option>
+                    <option value="2025-2026">FY 2025-2026</option>
+                    <option value="2027-2028">FY 2027-2028</option>
+                  </select>
+                  <select id="accMonthSelect" onchange="renderSchoolAccounts()" class="border rounded px-2 py-1.5 font-bold">
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October" selected>October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- EXACT 3-POINT LEDGER FORM -->
+              <div class="max-w-2xl mx-auto p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-4">
+                <div class="flex items-center justify-between pb-2 border-b">
+                  <span class="text-xs font-bold uppercase tracking-wider text-slate-700" id="accFormHeading">NSB Return for October 2026</span>
+                  <span class="text-[11px] font-mono bg-blue-100 text-blue-900 px-2 py-0.5 rounded font-bold">Official Ledger</span>
+                </div>
+
+                <div class="space-y-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">
+                      1. Balance on 30-06-2026 (PKR) *
+                    </label>
+                    <input type="number" id="inputAccOpening" placeholder="Opening baseline balance" min="0" oninput="calcNetBalanceLive()" class="w-full p-2.5 rounded-lg border border-slate-300 text-sm font-bold bg-white font-mono">
+                    <p class="text-[10px] text-slate-400 mt-0.5">Fixed baseline closing balance carried over into current FY.</p>
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">
+                      2. Credit Amount this month (PKR) *
+                    </label>
+                    <input type="number" id="inputAccCredit" placeholder="Tranche or collection received this month" min="0" oninput="calcNetBalanceLive()" class="w-full p-2.5 rounded-lg border border-slate-300 text-sm font-bold bg-white font-mono">
+                    <p class="text-[10px] text-slate-400 mt-0.5">Funds credited by Finance / DEA during selected month.</p>
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">
+                      3. Expenditure Till this month (PKR) *
+                    </label>
+                    <input type="number" id="inputAccExp" placeholder="Cumulative expenditure till end of this month" min="0" oninput="calcNetBalanceLive()" class="w-full p-2.5 rounded-lg border border-slate-300 text-sm font-bold bg-white font-mono">
+                    <p class="text-[10px] text-slate-400 mt-0.5">Total vouchers spent up to and including this month.</p>
+                  </div>
+
+                  <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200 flex items-center justify-between">
+                    <div>
+                      <span class="text-xs font-bold uppercase tracking-wider text-emerald-900 block">Current Available Balance</span>
+                      <span class="text-[11px] text-emerald-700">(Balance on 30-06-2026 + Credit this month - Expenditure Till this month)</span>
+                    </div>
+                    <span id="calculatedNetBalLabel" class="text-lg sm:text-xl font-black text-emerald-800 font-mono">PKR 0</span>
+                  </div>
+                </div>
+
+                <button onclick="saveSchoolAccountRecord()" class="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg text-xs shadow transition flex items-center justify-center gap-1.5">
+                  <i class="fa-solid fa-save"></i> Save Monthly Account Return
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 13. School Labs / IT Lab -->
+          <div id="schoolSec_labs" class="school-sec-pane hidden space-y-4">
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-3 max-w-xl mx-auto">
+              <h3 class="text-base font-bold text-slate-800 border-b pb-2">School Labs &amp; IT Equipment</h3>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Computer / IT Lab Status</label>
+                <select id="lab_status" class="w-full p-2 border rounded text-xs">
+                  <option value="Functional IT Lab">Functional IT Lab</option>
+                  <option value="Tablets Only (AEO / Head In-charge)">Tablets Only (School In-charge)</option>
+                  <option value="No IT Lab">No IT Lab</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Functional Computers Count</label>
+                <input type="number" id="lab_computers" placeholder="0" class="w-full p-2 border rounded text-xs font-bold">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Science Laboratory Kits</label>
+                <select id="lab_science" class="w-full p-2 border rounded text-xs">
+                  <option value="Available & Complete">Available &amp; Complete</option>
+                  <option value="Partially Available">Partially Available</option>
+                  <option value="Not Provided">Not Provided</option>
+                </select>
+              </div>
+              <button onclick="saveLabs()" class="w-full py-2 bg-blue-800 hover:bg-blue-900 text-white font-bold rounded text-xs shadow">Save Lab Information</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ==================== ADMIN SECTIONS ==================== -->
+        <div id="adminWorkspace" class="space-y-6 hidden">
+
+          <!-- 1. Central Tehsil Monitoring Desk -->
+          <div id="adminSec_tehsil_overview" class="admin-sec-pane space-y-5">
+            <div class="flex flex-col md:flex-row justify-between md:items-center pb-3 border-b border-slate-200 gap-3">
+              <div>
+                <div class="inline-flex items-center gap-1.5 bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 rounded text-xs font-bold">
+                  <i class="fa-solid fa-crown text-amber-600"></i> Competent Authority: Dr. Muhammad Salim Akhter
+                </div>
+                <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">Tehsil Jahanian Monitoring Console</h2>
+                <p class="text-xs text-slate-500">Supervised by Dy. DEO (EE-M) &bull; In-Charge IT/Budget: Syed Hassan Aslam</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <select id="adminMarkazFilterSelect" onchange="renderAdminOverview()" class="text-xs font-bold rounded-lg border border-slate-300 p-2 bg-white">
+                  <option value="ALL">All Tehsil (30 Schools)</option>
+                  <option value="Jahanian-Male">Markaz Jahanian-Male (16 Schools &bull; AEO M. Iftikhar)</option>
+                  <option value="Thatha Sadiq Abad-Male">Markaz Thatha Sadiq Abad-Male (14 Schools &bull; AEO Sajid Gill)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Top Level Statistics Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5" id="adminSummaryCards">
+              <!-- Dynamic Cards -->
+            </div>
+
+            <!-- Markaz Supervisors Bar -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-gradient-to-r from-blue-900 to-indigo-900 text-white p-4 rounded-xl shadow flex justify-between items-center">
+                <div>
+                  <span class="text-[10px] font-bold uppercase tracking-wider bg-amber-400 text-slate-900 px-2 py-0.5 rounded">Markaz 1</span>
+                  <h4 class="font-bold text-sm sm:text-base mt-1">Markaz Jahanian-Male</h4>
+                  <p class="text-xs text-blue-200 font-medium"><i class="fa-solid fa-user-tie text-amber-300 mr-1"></i> AEO Muhammad Iftikhar Shahid</p>
+                  <a href="tel:03006881239" class="text-[11px] text-amber-300 font-mono hover:underline"><i class="fa-solid fa-phone text-[10px] mr-1"></i> 0300-6881239</a>
+                </div>
+                <div class="text-right">
+                  <span class="text-xs bg-white/20 px-2.5 py-1 rounded font-bold">16 Schools</span>
+                </div>
+              </div>
+
+              <div class="bg-gradient-to-r from-emerald-900 to-slate-900 text-white p-4 rounded-xl shadow flex justify-between items-center">
+                <div>
+                  <span class="text-[10px] font-bold uppercase tracking-wider bg-amber-400 text-slate-900 px-2 py-0.5 rounded">Markaz 2</span>
+                  <h4 class="font-bold text-sm sm:text-base mt-1">Markaz Thatha Sadiq Abad-Male</h4>
+                  <p class="text-xs text-emerald-200 font-medium"><i class="fa-solid fa-user-tie text-amber-300 mr-1"></i> AEO Sajid Ali Gill</p>
+                  <a href="tel:03085732719" class="text-[11px] text-amber-300 font-mono hover:underline"><i class="fa-solid fa-phone text-[10px] mr-1"></i> 0308-5732719</a>
+                </div>
+                <div class="text-right">
+                  <span class="text-xs bg-white/20 px-2.5 py-1 rounded font-bold">14 Schools</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Access Clickable School Table -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+              <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <h3 class="font-bold text-sm text-slate-800">Live School Attendance &amp; Financial Ledger</h3>
+                <span class="text-xs text-blue-700 font-bold"><i class="fa-solid fa-mouse-pointer mr-1"></i> Click ANY school name to open its complete dossier</span>
+              </div>
+              <div class="overflow-x-auto max-h-[500px]">
+                <table class="w-full text-xs text-left">
+                  <thead class="bg-slate-100 text-slate-600 font-bold sticky top-0 uppercase text-[11px]">
+                    <tr>
+                      <th class="p-3">EMIS</th>
+                      <th class="p-3">School Name (Click to Inspect)</th>
+                      <th class="p-3">Markaz / AEO</th>
+                      <th class="p-3 text-center">Enrollment</th>
+                      <th class="p-3 text-center">Students Att.</th>
+                      <th class="p-3 text-center">Staff (Pres/Work)</th>
+                      <th class="p-3 text-right">NSB Balance</th>
+                      <th class="p-3 text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminQuickSchoolsTableBody" class="divide-y divide-slate-100">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Detailed 30 Schools Inspection Directory -->
+          <div id="adminSec_schools_directory" class="admin-sec-pane hidden space-y-4">
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b gap-3">
+                <div>
+                  <h3 class="text-base font-black text-slate-900">Schools Inspection Directory (Tehsil Jahanian)</h3>
+                  <p class="text-xs text-slate-500">Click on any institution to open its complete school dashboard, attendance, and asset profile</p>
+                </div>
+                <input type="text" id="adminSearchInput" oninput="filterSchoolsList()" placeholder="Search school or EMIS..." class="p-2 border rounded-lg text-xs w-full sm:w-64">
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 mt-4" id="adminSchoolCardsGrid">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Admin Accounts Consolidation -->
+          <div id="adminSec_admin_accounts" class="admin-sec-pane hidden space-y-4">
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-4">
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b gap-2">
+                <div>
+                  <h3 class="text-base font-black text-slate-900">Tehsil Jahanian NSB / FTF Monthly Consolidation</h3>
+                  <p class="text-xs text-slate-500">Certified by Syed Hassan Aslam (Office Dy DEO EE-M Jahanian)</p>
+                </div>
+                <div class="flex gap-2">
+                  <button onclick="window.print()" class="px-3 py-1.5 bg-slate-800 hover:bg-black text-white text-xs font-bold rounded"><i class="fa-solid fa-print mr-1"></i> Print Statement</button>
+                  <button onclick="exportAllCsv()" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded"><i class="fa-solid fa-file-excel mr-1"></i> Export Excel (CSV)</button>
+                </div>
+              </div>
+
+              <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                  <thead class="bg-slate-100 text-slate-700 uppercase font-bold text-[11px]">
+                    <tr>
+                      <th class="p-2.5">EMIS</th>
+                      <th class="p-2.5">School Name</th>
+                      <th class="p-2.5">Markaz</th>
+                      <th class="p-2.5 text-right">Bal on 30-06-2026</th>
+                      <th class="p-2.5 text-right">Credit This Month</th>
+                      <th class="p-2.5 text-right">Exp. Till Month</th>
+                      <th class="p-2.5 text-right font-black text-emerald-800">Net NSB Balance</th>
+                      <th class="p-2.5 text-right font-black text-blue-800">FTF Balance</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminConsolidatedFinanceTable" class="divide-y divide-slate-100 font-mono">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Verified Gazettes & Multi-Signatory Reports -->
+          <div id="adminSec_admin_reports" class="admin-sec-pane hidden space-y-5">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-6">
+              <div class="text-center border-b-2 border-slate-800 pb-4">
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-600">Government of the Punjab &bull; School Education Department</p>
+                <h1 class="text-lg sm:text-xl font-black uppercase text-slate-900 mt-1">
+                  Office of the Deputy District Education Officer (EE-M) Tehsil Jahanian
+                </h1>
+                <p class="text-xs text-slate-700 font-semibold mt-1">
+                  Monthly Consolidated Return &bull; Daily Attendance, Staff Position &amp; NSB/FTF Accounts
+                </p>
+                <p class="text-[11px] text-slate-500 font-mono mt-0.5">Tehsil Jahanian, District Khanewal &bull; Date: <span id="reportPrintDate">05/10/2026</span></p>
+              </div>
+
+              <div class="overflow-x-auto">
+                <table class="w-full text-[11px] text-left border border-slate-300">
+                  <thead class="bg-slate-100 text-slate-700 uppercase font-bold">
+                    <tr>
+                      <th class="border border-slate-300 p-2">EMIS</th>
+                      <th class="border border-slate-300 p-2">School</th>
+                      <th class="border border-slate-300 p-2">Markaz &amp; AEO</th>
+                      <th class="border border-slate-300 p-2 text-center">Enrollment</th>
+                      <th class="border border-slate-300 p-2 text-center">Att. %</th>
+                      <th class="border border-slate-300 p-2 text-center">Teachers (P/W)</th>
+                      <th class="border border-slate-300 p-2 text-right">NSB Balance</th>
+                      <th class="border border-slate-300 p-2 text-center">Classrooms</th>
+                      <th class="border border-slate-300 p-2 text-center">Dangerous</th>
+                    </tr>
+                  </thead>
+                  <tbody id="reportMasterTableBody">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Official Signatures Row -->
+              <div class="pt-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-xs">
+                <div class="border-t border-slate-400 pt-2">
+                  <p class="font-bold text-slate-800">School In-charges</p>
+                  <p class="text-[10px] text-slate-500">Verified Heads</p>
+                </div>
+                <div class="border-t border-slate-400 pt-2">
+                  <p class="font-bold text-slate-800">Muhammad Iftikhar Shahid</p>
+                  <p class="text-[10px] text-slate-600 font-semibold">AEO Markaz Jahanian-Male</p>
+                </div>
+                <div class="border-t border-slate-400 pt-2">
+                  <p class="font-bold text-slate-800">Sajid Ali Gill</p>
+                  <p class="text-[10px] text-slate-600 font-semibold">AEO Thatha Sadiq Abad-Male</p>
+                </div>
+                <div class="border-t border-slate-400 pt-2">
+                  <p class="font-bold text-slate-900">Syed Hassan Aslam</p>
+                  <p class="text-[10px] text-slate-700 font-semibold">In-Charge IT &amp; Budget/Accounts</p>
+                </div>
+              </div>
+
+              <div class="text-center pt-6 border-t border-dashed border-slate-300">
+                <p class="text-[11px] uppercase font-bold text-slate-500">Countersigned &amp; Approved by:</p>
+                <h4 class="text-base font-black text-slate-900">Dr. Muhammad Salim Akhter</h4>
+                <p class="text-xs font-semibold text-blue-900">Deputy District Education Officer (EE-M) Tehsil Jahanian</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. ADMIN INSPECT SCHOOL MODAL (360° SCHOOL DOSSIER) -->
+  <div id="schoolDossierModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center hidden p-3 sm:p-4">
+    <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden border border-slate-200">
+      <div class="bg-[#1e3a8a] text-white p-4 flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-bold uppercase bg-amber-400 text-slate-900 px-2 py-0.5 rounded font-mono" id="dossierEmisBadge">36440080</span>
+          <h3 class="text-base sm:text-lg font-black mt-1" id="dossierTitle">School Dossier</h3>
+          <p class="text-xs text-blue-200" id="dossierMeta">Markaz &bull; Head Teacher</p>
+        </div>
+        <button onclick="closeDossierModal()" class="text-white hover:text-amber-300 text-2xl font-bold p-1">&times;</button>
+      </div>
+
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-5 flex-1" id="dossierContent">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div class="p-3 bg-slate-100 border-t border-slate-200 flex justify-end gap-2">
+        <button onclick="closeDossierModal()" class="px-4 py-2 bg-slate-700 hover:bg-slate-800 text-white font-bold rounded-lg text-xs">Close Dossier</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. FORGOT / CHANGE PASSWORD OTP MODAL (ROUTED VIA sh697624@gmail.com) -->
+  <div id="forgotPwdModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-200">
+      <div class="flex items-center justify-between pb-3 border-b mb-4">
+        <h3 class="font-bold text-sm sm:text-base text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-key text-blue-700"></i> Headmaster Password Reset Request
+        </h3>
+        <button onclick="closeForgotPwdModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+      </div>
+
+      <div id="otpStep1" class="space-y-3.5">
+        <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-900">
+          <i class="fa-solid fa-circle-info mr-1 text-blue-700"></i>
+          For strict security, password changes require administrative authorization. An OTP verification code will be generated and dispatched through the authorized supervisory email: <strong>sh697624@gmail.com</strong>.
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Enter School EMIS Code *</label>
+          <input type="number" id="resetEmisInput" placeholder="e.g. 36440080" class="w-full p-2.5 border rounded-lg text-sm font-mono font-bold">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Head Teacher Registered Mobile No. *</label>
+          <input type="tel" id="resetPhoneInput" placeholder="0300-0000000" class="w-full p-2.5 border rounded-lg text-sm font-mono">
+        </div>
+
+        <button type="button" onclick="generateAndSendOtp()" class="w-full py-2.5 bg-blue-800 hover:bg-blue-900 text-white font-bold rounded-lg text-xs shadow flex items-center justify-center gap-2">
+          <i class="fa-solid fa-paper-plane"></i> Request OTP via sh697624@gmail.com
+        </button>
+      </div>
+
+      <!-- OTP Step 2 -->
+      <div id="otpStep2" class="space-y-3.5 hidden">
+        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-xs text-emerald-900">
+          <i class="fa-solid fa-check-circle mr-1 text-emerald-600"></i>
+          OTP generated and transmitted for authorization.
+          <span class="block mt-1 text-[11px] font-mono text-slate-700" id="otpSimulationDisplay"></span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Enter 6-Digit OTP Received *</label>
+          <input type="number" id="inputOtpCode" placeholder="Enter 6-digit OTP" class="w-full p-2.5 border rounded-lg text-sm font-mono text-center tracking-widest font-black">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">New Headmaster Password *</label>
+          <input type="password" id="inputNewPassword" placeholder="Minimum 6 characters" class="w-full p-2.5 border rounded-lg text-sm font-bold">
+        </div>
+
+        <div class="flex gap-2 pt-2">
+          <button type="button" onclick="verifyOtpAndChangePassword()" class="flex-1 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg text-xs shadow">
+            Verify &amp; Update Password
+          </button>
+          <button type="button" onclick="closeForgotPwdModal()" class="px-4 py-2.5 bg-slate-200 text-slate-700 font-bold rounded-lg text-xs">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. ADD TEACHER MODAL -->
+  <div id="addTeacherModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-5 shadow-2xl border border-slate-200">
+      <div class="flex justify-between items-center pb-2 border-b mb-3">
+        <h3 class="font-bold text-sm text-slate-800">Add Teacher to Teaching Statement</h3>
+        <button onclick="closeAddTeacherModal()" class="text-xl font-bold">&times;</button>
+      </div>
+      <form onsubmit="handleAddTeacherSubmit(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold mb-1">Teacher Full Name *</label>
+          <input type="text" id="newTeacherName" required class="w-full p-2 border rounded font-bold">
+        </div>
+        <div>
+          <label class="block font-bold mb-1">Father's Name *</label>
+          <input type="text" id="newTeacherFather" required class="w-full p-2 border rounded">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold mb-1">Designation *</label>
+            <select id="newTeacherDesig" class="w-full p-2 border rounded">
+              <option value="EST(General)">EST(General)</option>
+              <option value="EST(Science)">EST(Science)</option>
+              <option value="EST(Math)">EST(Math)</option>
+              <option value="PST">PST (Primary)</option>
+              <option value="SST(General)">SST(General)</option>
+              <option value="SST(Computer Science)">SST(Computer Science)</option>
+              <option value="SST(Science)">SST(Science)</option>
+              <option value="SSE(Chem-Bio)">SSE(Chem-Bio)</option>
+              <option value="SSE(Physics-Math)">SSE(Physics-Math)</option>
+              <option value="SESE(English)">SESE(English)</option>
+              <option value="SESE(Science)">SESE(Science)</option>
+              <option value="Head Teacher">Head Teacher</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold mb-1">BPS *</label>
+            <input type="number" id="newTeacherBps" required value="15" class="w-full p-2 border rounded font-bold">
+          </div>
+        </div>
+        <div>
+          <label class="block font-bold mb-1">CNIC Number</label>
+          <input type="text" id="newTeacherCnic" placeholder="36103-0000000-0" class="w-full p-2 border rounded font-mono">
+        </div>
+        <div>
+          <label class="block font-bold mb-1">Mobile / WhatsApp Number</label>
+          <input type="tel" id="newTeacherPhone" placeholder="0300-0000000" class="w-full p-2 border rounded font-mono">
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeAddTeacherModal()" class="px-3 py-1.5 bg-slate-200 rounded">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 bg-emerald-700 text-white font-bold rounded shadow">Save Teacher</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. ADD VACANCY MODAL -->
+  <div id="addVacancyModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl border border-slate-200">
+      <div class="flex justify-between items-center pb-2 border-b mb-3">
+        <h3 class="font-bold text-sm text-slate-800" id="vacModalTitle">Add Vacancy Post</h3>
+        <button onclick="closeAddVacancyModal()" class="text-xl font-bold">&times;</button>
+      </div>
+      <form onsubmit="handleAddVacancySubmit(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold mb-1">Post Name *</label>
+          <input type="text" id="vacPostName" required placeholder="e.g. SESE(English)" class="w-full p-2 border rounded font-bold">
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="block font-bold mb-1">BPS</label>
+            <input type="number" id="vacBps" value="15" class="w-full p-2 border rounded font-bold">
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Sanctioned</label>
+            <input type="number" id="vacSanc" value="1" min="1" class="w-full p-2 border rounded font-bold">
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Working</label>
+            <input type="number" id="vacWork" value="1" min="0" class="w-full p-2 border rounded font-bold">
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeAddVacancyModal()" class="px-3 py-1.5 bg-slate-200 rounded">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 bg-emerald-700 text-white font-bold rounded shadow">Save Vacancy</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN JAVASCRIPT LOGIC ==================== -->
+  <script>
+    // Storage Keys
+    const KEY_SCHOOLS = 'ddeo_jahanian_schools_deose_v3';
+    const KEY_SESSION = 'ddeo_jahanian_session_deose_v3';
+    const KEY_PENDING_OTP = 'ddeo_jahanian_pending_otp';
+
+    // Official Designated Leadership
+    const DY_DEO_NAME = 'Dr. Muhammad Salim Akhter';
+    const IT_ACCOUNTS_OFFICER = 'Syed Hassan Aslam';
+    const ADMIN_PHONE_AUTH = '0306-6245287';
+    const ADMIN_PIN_AUTH = '1122';
+    const SUPERVISOR_RESET_EMAIL = 'sh697624@gmail.com';
+
+    // 30 Verified Schools of Tehsil Jahanian
+    const DEFAULT_30_SCHOOLS = [
+      // 16 Schools in Markaz Jahanian-Male (AEO: Muhammad Iftikhar Shahid)
+      { emis: "36440080", name: "GMS JAHANIAN", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Middle", head: "SHAHID MEHMOOD", headCell: "0301-7537508", password: "123456" },
+      { emis: "36440313", name: "GMS 103/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Middle", head: "ATTIQ UR REHMAN", headCell: "0308-7835405", password: "123456" },
+      { emis: "36440262", name: "GMS NO 3", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Middle", head: "M JAMIL ANJUM", headCell: "0302-7818878", password: "123456" },
+      { emis: "36440298", name: "GMS 150/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Middle", head: "SAIF ULLAH", headCell: "0302-4913321", password: "123456" },
+      { emis: "36440318", name: "GMS 93/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Middle", head: "HABIB UL REHMAN", headCell: "0341-0666133", password: "123456" },
+      { emis: "36440328", name: "GMS 157/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Middle", head: "RAO MUSHTAQ AHMAD", headCell: "0303-7359108", password: "123456" },
+      { emis: "36440084", name: "GMS RAHIM SHAH", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Middle", head: "AZIZ AHMED", headCell: "0300-6998248", password: "123456" },
+      { emis: "36440089", name: "GMS 152/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Middle", head: "MUZAMMAL KHAN", headCell: "0300-2622145", password: "123456" },
+      { emis: "36440302", name: "GPS 158/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Primary", head: "GHAZANFAR ABBAS", headCell: "0300-0791758", password: "123456" },
+      { emis: "36440329", name: "GPS 163/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Primary", head: "MAQSOOD AHMAD", headCell: "0300-6642782", password: "123456" },
+      { emis: "36440263", name: "GPS 104/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Primary", head: "MUBASHAR RAMZAN", headCell: "0334-9916954", password: "123456" },
+      { emis: "36440287", name: "GPS 110/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Primary", head: "MAQSOOD AHMAD", headCell: "0303-7709003", password: "123456" },
+      { emis: "36440334", name: "GPS 97/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Primary", head: "ABDUL NAEEM", headCell: "0304-5370868", password: "123456" },
+      { emis: "36440307", name: "GPS 101/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Primary", head: "ABID HUSSAIN WAQAS", headCell: "0300-8323143", password: "123456" },
+      { emis: "36440306", name: "GPS 102/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Primary", head: "MUHAMMAD ASLAM", headCell: "0300-2020464", password: "123456" },
+      { emis: "36440316", name: "GPS 160/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Primary", head: "USMAN RASHEED", headCell: "0300-7386573", password: "123456" },
+
+      // 14 Schools in Markaz Thatha Sadiq Abad-Male (AEO: Sajid Ali Gill)
+      { emis: "36440088", name: "GMS THATHA", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Middle", head: "RANA ASGHAR ALI", headCell: "0304-0176346", password: "123456" },
+      { emis: "36440289", name: "GMS 130/10.R", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Middle", head: "NASIR MEHMOOD", headCell: "0300-7003626", password: "123456" },
+      { emis: "36440083", name: "GMS 121/10.R", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Middle", head: "MUHAMMAD IMRAN AMIR", headCell: "0300-6333726", password: "123456" },
+      { emis: "36440304", name: "GMS 139/10.R", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Middle", head: "MUHAMMAD ABDULLAH", headCell: "0307-6978148", password: "123456" },
+      { emis: "36440085", name: "GMS 118/10.R", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Middle", head: "MUHAMMAD MUNIR", headCell: "0307-7403153", password: "123456" },
+      { emis: "36440087", name: "GMS BHIRKI", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Middle", head: "MUKHTIYAR AHMAD", headCell: "0306-7245192", password: "123456" },
+      { emis: "36440284", name: "GPS KANDI WALA", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Primary", head: "HAFEEZ AKHTAR", headCell: "0300-2927118", password: "123456" },
+      { emis: "36440281", name: "GPS 135/10.R", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Primary", head: "MUHAMMAD ARSHAD", headCell: "0311-8315137", password: "123456" },
+      { emis: "36440260", name: "GPS 111/10.R", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Primary", head: "M RASHID", headCell: "0308-6757882", password: "123456" },
+      { emis: "36440261", name: "GPS NO.2", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Primary", head: "M SHAFIQ", headCell: "0301-7560631", password: "123456" },
+      { emis: "36440308", name: "GPS 112/10.R", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Primary", head: "MUHAMMAD JAFAR SIDDIQ", headCell: "0306-8397179", password: "123456" },
+      { emis: "36440278", name: "GPS 134/10.R", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Primary", head: "ALLAH DITTAH", headCell: "0302-7419194", password: "123456" },
+      { emis: "36440292", name: "GPS PIR JHN", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Primary", head: "M YOUSAF", headCell: "0343-7201133", password: "123456" },
+      { emis: "36440340", name: "GPS BILO CHANWALI", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Primary", head: "M YOUNAS SOHAIL", headCell: "0304-7145214", password: "123456" }
+    ];
+
+    // Global in-memory state
+    let state = {
+      schools: [],
+      session: null,
+      schoolSection: 'dashboard',
+      adminSection: 'tehsil_overview',
+      inspectingSchoolEmis: null
+    };
+
+    // Load initial state & enrich schools with DEOSE Khanewal modules
+    function initApp() {
+      const stored = localStorage.getItem(KEY_SCHOOLS);
+      if (stored) {
+        try {
+          state.schools = JSON.parse(stored);
+        } catch (e) {
+          state.schools = initializeEnrichedSchools();
+        }
+      } else {
+        state.schools = initializeEnrichedSchools();
+        saveSchools();
+      }
+
+      const sessionStored = localStorage.getItem(KEY_SESSION);
+      if (sessionStored) {
+        try {
+          state.session = JSON.parse(sessionStored);
+        } catch (e) {
+          state.session = null;
+        }
+      }
+
+      updateUI();
+    }
+
+    function saveSchools() {
+      localStorage.setItem(KEY_SCHOOLS, JSON.stringify(state.schools));
+    }
+
+    function initializeEnrichedSchools() {
+      return DEFAULT_30_SCHOOLS.map((s, idx) => {
+        const isMiddle = s.level === 'Middle';
+        return {
+          ...s,
+          // CRUCIAL: Head enters enrollment. Default to 0 or baseline for entry
+          enrollment: 0,
+          attendance: {
+            date: new Date().toISOString().split('T')[0],
+            studentsEnrolled: 0,
+            studentsPresent: 0,
+            studentsAbsent: 0,
+            rate: 0,
+            teaching: { sanctioned: isMiddle ? 10 : 5, working: isMiddle ? 9 : 5, present: isMiddle ? 9 : 5, leave: 0 },
+            nonteaching: { sanctioned: 2, working: 2, present: 2, leave: 0 }
+          },
+          // Detailed DEOSE-style Teaching Staff List
+          teachingStaff: [
+            { id: 1, name: s.head, father: "Muhammad Sharif", desig: isMiddle ? "Headmaster (BPS-17)" : "Head Teacher (BPS-15)", bps: isMiddle ? 17 : 15, phone: s.headCell, cnic: "36103-1234567-1" },
+            { id: 2, name: "Muhammad Awais", father: "Abdul Ghafoor", desig: isMiddle ? "SSE(Chem-Bio)" : "EST(General)", bps: isMiddle ? 16 : 15, phone: "0300-1122334", cnic: "36103-9729323-3" },
+            { id: 3, name: "Syed Zain Mustafa", father: "Syed Fakhar Abbas", desig: isMiddle ? "SST(Science)" : "EST(Math)", bps: isMiddle ? 16 : 15, phone: "0301-4455667", cnic: "36103-5566778-9" }
+          ],
+          nonTeachingStaff: [
+            { id: 1, name: "Allah Ditta", father: "Ghulam Qadir", desig: "Naib Qasid", bps: 1, phone: "0307-1234567" },
+            { id: 2, name: "Muhammad Ramzan", father: "Khadim Hussain", desig: "Chowkidar", bps: 1, phone: "0308-7654321" }
+          ],
+          // Vacancy List
+          vacanciesTeaching: [
+            { id: 1, post: isMiddle ? "Headmaster" : "Head Teacher", bps: isMiddle ? 17 : 15, sanctioned: 1, working: 1, vacant: 0 },
+            { id: 2, post: isMiddle ? "SST(Computer Science)" : "EST(General)", bps: isMiddle ? 16 : 15, sanctioned: isMiddle ? 2 : 2, working: 1, vacant: isMiddle ? 1 : 1 },
+            { id: 3, post: isMiddle ? "SESE(English)" : "PST", bps: isMiddle ? 15 : 14, sanctioned: isMiddle ? 3 : 2, working: isMiddle ? 2 : 2, vacant: isMiddle ? 1 : 0 }
+          ],
+          vacanciesNonTeaching: [
+            { id: 1, post: "Naib Qasid", bps: 1, sanctioned: 1, working: 1, vacant: 0 },
+            { id: 2, post: "Chowkidar", bps: 1, sanctioned: 1, working: 1, vacant: 0 }
+          ],
+          costCenter: {
+            ddoCode: `KC-${6200 + idx}`,
+            costCenterName: `${s.name} KC-${6200 + idx}`
+          },
+          generalInfo: {
+            mouza: `CHAK NO ${100 + idx}/10-R`,
+            ucName: `UC ${s.markaz.includes('Jahanian') ? 'Jahanian Rural' : 'Thatha Sadiq Abad'}`,
+            ucNo: `${110 + idx}`,
+            population: 3200 + (idx * 50),
+            na: "NA-147",
+            pp: "PP-210",
+            policeStation: "JAHANIAN",
+            type: "Rural",
+            category: "Only Boys",
+            kanal: isMiddle ? 6 : 3,
+            marla: isMiddle ? 12 : 5,
+            covered: isMiddle ? "2 Kanal 8 Marla" : "1 Kanal 5 Marla",
+            water: "Yes",
+            waterRes: "Electric Pump / Turbine",
+            elec: "Yes",
+            shift: "Single Shift"
+          },
+          buildingRecord: {
+            haveBuilding: "Yes",
+            owner: "Education Department",
+            status: "Satisfactory Concrete",
+            boundaryWall: "Completed",
+            dangerous: "No",
+            dangerRooms: 0,
+            totalRooms: isMiddle ? 8 : 4,
+            teachRooms: isMiddle ? 6 : 3,
+            officeRooms: isMiddle ? 2 : 1,
+            toilets: isMiddle ? 5 : 2,
+            toiletStatus: "Functional",
+            gps: `Lat.30.${85800 + idx}-Long.71.${95400 + idx}`,
+            gate: "Yes",
+            emGate: "Yes",
+            req: "Regular Maintenance / Annual White Wash"
+          },
+          // ACCOUNTS: Exact 3 points + Year/Month mapping
+          accounts: {
+            "2026-2027": {
+              "October": {
+                NSB: { opening2026: 250000, creditMonth: 50000, expMonth: 65000 },
+                FTF: { opening2026: 35000, creditMonth: 5000, expMonth: 4200 }
+              }
+            }
+          },
+          labs: {
+            status: isMiddle ? "Functional IT Lab" : "Tablets Only (School In-charge)",
+            computers: isMiddle ? 10 : 1,
+            science: isMiddle ? "Available & Complete" : "Partially Available"
+          }
+        };
+      });
+    }
+
+    // Helper Toast
+    function showToast(msg, type = 'success') {
+      const box = document.getElementById('toastBox');
+      const toast = document.createElement('div');
+      toast.className = `${type === 'success' ? 'bg-emerald-800' : 'bg-red-800'} text-white px-4 py-2.5 rounded-lg shadow-xl text-xs sm:text-sm font-semibold flex items-center gap-2 pointer-events-auto transition duration-300`;
+      toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation'}"></i><span>${msg}</span>`;
+      box.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Toggle Login Screen vs Application View
+    function updateUI() {
+      const authView = document.getElementById('authView');
+      const portalView = document.getElementById('portalView');
+      const authTop = document.getElementById('authTopSlot');
+      const sessionCard = document.getElementById('sessionCard');
+      const schoolNav = document.getElementById('schoolNavMenu');
+      const adminNav = document.getElementById('adminNavMenu');
+      const schoolWork = document.getElementById('schoolWorkspace');
+      const adminWork = document.getElementById('adminWorkspace');
+
+      if (!state.session) {
+        authView.classList.remove('hidden');
+        portalView.classList.add('hidden');
+        authTop.innerHTML = `
+          <span class="inline-flex items-center px-2 py-1 rounded bg-blue-900 text-amber-300 text-xs font-bold border border-blue-700">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span> PORTAL ACTIVE
+          </span>
+        `;
+        return;
+      }
+
+      authView.classList.add('hidden');
+      portalView.classList.remove('hidden');
+
+      const isAdmin = state.session.role === 'admin';
+
+      authTop.innerHTML = `
+        <div class="text-right text-xs">
+          <p class="font-bold text-white">${isAdmin ? 'Dr. Muhammad Salim Akhter' : state.session.school.name}</p>
+          <p class="text-[10px] text-amber-300 font-mono">${isAdmin ? 'Admin: ' + ADMIN_PHONE_AUTH : 'EMIS: ' + state.session.school.emis}</p>
+        </div>
+        <button onclick="handleLogout()" title="Logout" class="ml-2.5 p-2 bg-blue-950 hover:bg-red-700 text-white rounded-lg text-xs transition">
+          <i class="fa-solid fa-power-off"></i>
+        </button>
+      `;
+
+      if (isAdmin) {
+        schoolNav.classList.add('hidden');
+        adminNav.classList.remove('hidden');
+        schoolWork.classList.add('hidden');
+        adminWork.classList.remove('hidden');
+
+        sessionCard.innerHTML = `
+          <div class="flex items-center space-x-2.5">
+            <div class="w-10 h-10 rounded-xl bg-slate-900 text-amber-400 flex items-center justify-center font-bold text-base shrink-0 shadow">
+              <i class="fa-solid fa-crown"></i>
+            </div>
+            <div class="overflow-hidden">
+              <p class="text-xs font-black text-slate-900">${DY_DEO_NAME}</p>
+              <p class="text-[11px] text-blue-900 font-bold leading-tight">Dy. DEO (EE-M) Jahanian</p>
+              <p class="text-[10px] text-slate-500">In-Charge IT: ${IT_ACCOUNTS_OFFICER}</p>
+            </div>
+          </div>
+        `;
+        setAdminSection(state.adminSection || 'tehsil_overview');
+      } else {
+        adminNav.classList.add('hidden');
+        schoolNav.classList.remove('hidden');
+        adminWork.classList.add('hidden');
+        schoolWork.classList.remove('hidden');
+
+        const s = getActiveSchool();
+        sessionCard.innerHTML = `
+          <div class="flex items-center space-x-2.5">
+            <div class="w-10 h-10 rounded-xl bg-[#1e3a8a] text-white flex items-center justify-center font-bold text-base shrink-0 shadow">
+              <i class="fa-solid fa-school"></i>
+            </div>
+            <div class="overflow-hidden">
+              <p class="text-xs font-black text-slate-900 truncate">${s.name}</p>
+              <p class="text-[11px] text-blue-800 font-bold font-mono">EMIS: ${s.emis}</p>
+              <p class="text-[10px] text-slate-500 truncate">AEO: ${s.aeo}</p>
+            </div>
+          </div>
+        `;
+        setSchoolSection(state.schoolSection || 'dashboard');
+      }
+    }
+
+    function getActiveSchool() {
+      if (!state.session || state.session.role !== 'school') return state.schools[0];
+      return state.schools.find(s => s.emis === state.session.school.emis) || state.schools[0];
+    }
+
+    function switchLoginMode(mode) {
+      const headBtn = document.getElementById('tabHeadLoginBtn');
+      const adminBtn = document.getElementById('tabAdminLoginBtn');
+      const headSec = document.getElementById('headLoginSection');
+      const adminSec = document.getElementById('adminLoginSection');
+
+      if (mode === 'head') {
+        headBtn.className = "flex-1 pb-3 text-xs sm:text-sm font-bold border-b-2 border-blue-700 text-blue-900 flex items-center justify-center gap-1.5";
+        adminBtn.className = "flex-1 pb-3 text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center justify-center gap-1.5";
+        headSec.classList.remove('hidden');
+        adminSec.classList.add('hidden');
+      } else {
+        adminBtn.className = "flex-1 pb-3 text-xs sm:text-sm font-bold border-b-2 border-slate-900 text-slate-900 flex items-center justify-center gap-1.5";
+        headBtn.className = "flex-1 pb-3 text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center justify-center gap-1.5";
+        adminSec.classList.remove('hidden');
+        headSec.classList.add('hidden');
+      }
+    }
+
+    function handleHeadLogin(e) {
+      e.preventDefault();
+      const emis = document.getElementById('headEmisInput').value.trim();
+      const pass = document.getElementById('headPassInput').value.trim();
+
+      const school = state.schools.find(s => s.emis === emis);
+      if (!school) {
+        showToast('EMIS Code not registered in Tehsil Jahanian!', 'error');
+        return;
+      }
+      if (school.password !== pass) {
+        showToast('Incorrect password for this school! Tap Forgot Password.', 'error');
+        return;
+      }
+
+      state.session = { role: 'school', school: school };
+      localStorage.setItem(KEY_SESSION, JSON.stringify(state.session));
+      showToast(`Welcome Headmaster: ${school.name}`);
+      updateUI();
+    }
+
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const phone = document.getElementById('adminPhoneInput').value.trim();
+      const pin = document.getElementById('adminPinInput').value.trim();
+
+      if (phone !== ADMIN_PHONE_AUTH) {
+        showToast(`Access Denied! Authorized strictly for phone ${ADMIN_PHONE_AUTH}`, 'error');
+        return;
+      }
+      if (pin !== ADMIN_PIN_AUTH) {
+        showToast('Invalid Admin Security PIN!', 'error');
+        return;
+      }
+
+      state.session = {
+        role: 'admin',
+        name: DY_DEO_NAME,
+        phone: ADMIN_PHONE_AUTH,
+        itIncharge: IT_ACCOUNTS_OFFICER
+      };
+      localStorage.setItem(KEY_SESSION, JSON.stringify(state.session));
+      showToast(`Welcome Dr. Muhammad Salim Akhter & Admin Desk`);
+      updateUI();
+    }
+
+    function handleLogout() {
+      state.session = null;
+      localStorage.removeItem(KEY_SESSION);
+      showToast('Session terminated successfully');
+      updateUI();
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('hidden');
+    }
+
+    // ==================== FORGOT PASSWORD OTP FLOW ====================
+    function openForgotPwdModal() {
+      document.getElementById('forgotPwdModal').classList.remove('hidden');
+      document.getElementById('otpStep1').classList.remove('hidden');
+      document.getElementById('otpStep2').classList.add('hidden');
+    }
+
+    function closeForgotPwdModal() {
+      document.getElementById('forgotPwdModal').classList.add('hidden');
+    }
+
+    function generateAndSendOtp() {
+      const emis = document.getElementById('resetEmisInput').value.trim();
+      const phone = document.getElementById('resetPhoneInput').value.trim();
+
+      const school = state.schools.find(s => s.emis === emis);
+      if (!school) {
+        showToast('EMIS Code not found!', 'error');
+        return;
+      }
+
+      // Generate 6 digit numeric code
+      const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+      const pendingData = {
+        emis: emis,
+        otp: generatedOtp,
+        timestamp: Date.now()
+      };
+      localStorage.setItem(KEY_PENDING_OTP, JSON.stringify(pendingData));
+
+      // Show step 2 and simulate transmission confirmation to sh697624@gmail.com
+      document.getElementById('otpStep1').classList.add('hidden');
+      document.getElementById('otpStep2').classList.remove('hidden');
+      document.getElementById('otpSimulationDisplay').innerHTML = `
+        Security OTP has been routed to <strong>${SUPERVISOR_RESET_EMAIL}</strong> for approval.<br>
+        <span class="text-emerald-700 font-bold bg-white px-2 py-0.5 rounded border border-emerald-300 mt-1 inline-block">Authorized OTP: ${generatedOtp}</span>
+      `;
+      showToast(`Approval OTP routed to ${SUPERVISOR_RESET_EMAIL}`);
+    }
+
+    function verifyOtpAndChangePassword() {
+      const enteredOtp = document.getElementById('inputOtpCode').value.trim();
+      const newPass = document.getElementById('inputNewPassword').value.trim();
+
+      if (!newPass || newPass.length < 5) {
+        showToast('Password must be at least 5 characters!', 'error');
+        return;
+      }
+
+      const pending = JSON.parse(localStorage.getItem(KEY_PENDING_OTP) || '{}');
+      if (!pending || pending.otp !== enteredOtp) {
+        showToast('Invalid OTP entered! Please check email approval.', 'error');
+        return;
+      }
+
+      const school = state.schools.find(s => s.emis === pending.emis);
+      if (school) {
+        school.password = newPass;
+        saveSchools();
+        localStorage.removeItem(KEY_PENDING_OTP);
+        closeForgotPwdModal();
+        showToast(`Password successfully updated for ${school.name}! You can now login.`);
+      }
+    }
+
+    // ==================== SCHOOL WORKSPACE NAVIGATION & RENDERING ====================
+    function setSchoolSection(sec) {
+      state.schoolSection = sec;
+      document.querySelectorAll('.school-sec-pane').forEach(el => el.classList.add('hidden'));
+      const activeEl = document.getElementById(`schoolSec_${sec}`);
+      if (activeEl) activeEl.classList.remove('hidden');
+
+      document.querySelectorAll('.school-nav-btn').forEach(btn => {
+        if (btn.dataset.sec === sec) {
+          btn.className = "school-nav-btn w-full flex items-center px-3 py-2 rounded-lg font-bold bg-blue-50 text-blue-900 border border-blue-200 transition";
+        } else {
+          btn.className = "school-nav-btn w-full flex items-center px-3 py-2 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition";
+        }
+      });
+
+      const s = getActiveSchool();
+
+      if (sec === 'dashboard') renderSchoolDashboard(s);
+      if (sec === 'attendance') renderSchoolAttendanceForm(s);
+      if (sec === 'teaching') renderTeachingStatement(s);
+      if (sec === 'nonteaching') renderNonTeachingStatement(s);
+      if (sec === 'vacancy_t') renderVacancyTeaching(s);
+      if (sec === 'vacancy_nt') renderVacancyNonTeaching(s);
+      if (sec === 'school_info') renderSchoolGeneralInfo(s);
+      if (sec === 'building') renderSchoolBuildingInfo(s);
+      if (sec === 'accounts') renderSchoolAccounts();
+      if (sec === 'cost_center') renderCostCenter(s);
+      if (sec === 'labs') renderLabs(s);
+    }
+
+    function renderSchoolDashboard(s) {
+      document.getElementById('dashLevelBadge').textContent = s.level;
+      document.getElementById('dashSchoolName').textContent = s.name;
+      document.getElementById('dashSchoolSubtitle').textContent = `Markaz ${s.markaz} | EMIS: ${s.emis} | Head: ${s.head} (${s.headCell})`;
+      document.getElementById('dashAeoName').textContent = `${s.aeo} (${s.aeoCell})`;
+
+      const grid = document.getElementById('dashStatsGrid');
+      const att = s.attendance;
+      const netNSB = computeNetAccount(s, '2026-2027', 'October', 'NSB');
+
+      grid.innerHTML = `
+        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+          <span class="text-[10px] font-bold text-slate-400 uppercase">Current Enrolled</span>
+          <p class="text-xl font-black text-slate-900 mt-0.5">${att.studentsEnrolled || 0}</p>
+          <span class="text-[10px] text-slate-500">Entered by Head</span>
+        </div>
+        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+          <span class="text-[10px] font-bold text-emerald-600 uppercase">Students Present</span>
+          <p class="text-xl font-black text-emerald-700 mt-0.5">${att.studentsPresent || 0}</p>
+          <span class="text-[10px] text-emerald-800 font-bold">${att.rate || 0}% Turnout</span>
+        </div>
+        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+          <span class="text-[10px] font-bold text-indigo-600 uppercase">Teaching Staff</span>
+          <p class="text-xl font-black text-slate-900 mt-0.5">${att.teaching?.present || 0} / ${att.teaching?.working || 0}</p>
+          <span class="text-[10px] text-indigo-700">Present / Working</span>
+        </div>
+        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+          <span class="text-[10px] font-bold text-emerald-700 uppercase">Available NSB</span>
+          <p class="text-base sm:text-lg font-black text-emerald-700 mt-0.5 font-mono">Rs. ${netNSB.toLocaleString()}</p>
+          <span class="text-[10px] text-slate-400">Oct 2026 Balance</span>
+        </div>
+      `;
+    }
+
+    function renderSchoolAttendanceForm(s) {
+      const att = s.attendance;
+      document.getElementById('attCurrentDate').textContent = `Date: ${new Date().toLocaleDateString('en-PK', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}`;
+      document.getElementById('inputAttEnrolled').value = att.studentsEnrolled || '';
+      document.getElementById('inputAttPresent').value = att.studentsPresent || '';
+      document.getElementById('inputAttAbsent').value = att.studentsAbsent || 0;
+      document.getElementById('studentAttPercentLabel').textContent = `Turnout: ${att.rate || 0}%`;
+
+      document.getElementById('inputTeachSanctioned').value = att.teaching?.sanctioned || 8;
+      document.getElementById('inputTeachWorking').value = att.teaching?.working || 7;
+      document.getElementById('inputTeachPresent').value = att.teaching?.present || 7;
+      document.getElementById('inputTeachLeave').value = att.teaching?.leave || 0;
+
+      document.getElementById('inputNonTeachSanctioned').value = att.nonteaching?.sanctioned || 2;
+      document.getElementById('inputNonTeachWorking').value = att.nonteaching?.working || 2;
+      document.getElementById('inputNonTeachPresent').value = att.nonteaching?.present || 2;
+      document.getElementById('inputNonTeachLeave').value = att.nonteaching?.leave || 0;
+    }
+
+    function calculateAttendanceLive() {
+      const enrolled = Number(document.getElementById('inputAttEnrolled').value) || 0;
+      const present = Number(document.getElementById('inputAttPresent').value) || 0;
+      const absent = Math.max(0, enrolled - present);
+      document.getElementById('inputAttAbsent').value = absent;
+
+      const rate = enrolled > 0 ? Math.round((present / enrolled) * 100) : 0;
+      document.getElementById('studentAttPercentLabel').textContent = `Turnout: ${rate}% (${present} present out of ${enrolled} currently enrolled)`;
+    }
+
+    function handleDailyAttendanceSubmit(e) {
+      e.preventDefault();
+      const s = getActiveSchool();
+      const enrolled = Number(document.getElementById('inputAttEnrolled').value);
+      const present = Number(document.getElementById('inputAttPresent').value);
+      const absent = Math.max(0, enrolled - present);
+
+      if (present > enrolled) {
+        showToast('Students present cannot exceed total enrolled count!', 'error');
+        return;
+      }
+
+      const rate = enrolled > 0 ? Math.round((present / enrolled) * 100) : 0;
+
+      s.enrollment = enrolled;
+      s.attendance = {
+        date: new Date().toISOString().split('T')[0],
+        studentsEnrolled: enrolled,
+        studentsPresent: present,
+        studentsAbsent: absent,
+        rate: rate,
+        teaching: {
+          sanctioned: Number(document.getElementById('inputTeachSanctioned').value),
+          working: Number(document.getElementById('inputTeachWorking').value),
+          present: Number(document.getElementById('inputTeachPresent').value),
+          leave: Number(document.getElementById('inputTeachLeave').value)
+        },
+        nonteaching: {
+          sanctioned: Number(document.getElementById('inputNonTeachSanctioned').value),
+          working: Number(document.getElementById('inputNonTeachWorking').value),
+          present: Number(document.getElementById('inputNonTeachPresent').value),
+          leave: Number(document.getElementById('inputNonTeachLeave').value)
+        }
+      };
+
+      saveSchools();
+      showToast(`Daily Attendance saved! Turnout: ${rate}%`);
+      renderSchoolDashboard(s);
+    }
+
+    // Teaching Statement Table
+    function renderTeachingStatement(s) {
+      const tbody = document.getElementById('teachingStaffTableBody');
+      document.getElementById('certHeadSign').textContent = `Regards, ${s.head} (${s.name})`;
+
+      tbody.innerHTML = (s.teachingStaff || []).map((t, i) => `
+        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+          <td class="p-2.5 font-bold">${i + 1}</td>
+          <td class="p-2.5">
+            <span class="font-bold text-slate-900 block">${t.name}</span>
+            <span class="text-[10px] text-slate-500">S/O ${t.father} &bull; CNIC: ${t.cnic || 'N/A'}</span>
+          </td>
+          <td class="p-2.5 font-semibold text-slate-700">${t.desig}</td>
+          <td class="p-2.5 font-mono font-bold">${t.bps}</td>
+          <td class="p-2.5">
+            <div class="w-8 h-8 rounded-full bg-slate-300 flex items-center justify-center text-slate-600 text-xs">
+              <i class="fa-solid fa-user"></i>
+            </div>
+          </td>
+          <td class="p-2.5 text-center space-x-1">
+            <button onclick="editTeacher(${t.id})" class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[10px] font-bold">Edit</button>
+            <button onclick="deleteTeacher(${t.id})" class="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-[10px] font-bold">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function openAddTeacherModal() { document.getElementById('addTeacherModal').classList.remove('hidden'); }
+    function closeAddTeacherModal() { document.getElementById('addTeacherModal').classList.add('hidden'); }
+
+    function handleAddTeacherSubmit(e) {
+      e.preventDefault();
+      const s = getActiveSchool();
+      const name = document.getElementById('newTeacherName').value.trim();
+      const father = document.getElementById('newTeacherFather').value.trim();
+      const desig = document.getElementById('newTeacherDesig').value;
+      const bps = Number(document.getElementById('newTeacherBps').value);
+      const cnic = document.getElementById('newTeacherCnic').value.trim();
+      const phone = document.getElementById('newTeacherPhone').value.trim();
+
+      s.teachingStaff.push({
+        id: Date.now(),
+        name: name,
+        father: father,
+        desig: desig,
+        bps: bps,
+        cnic: cnic,
+        phone: phone
+      });
+
+      saveSchools();
+      closeAddTeacherModal();
+      renderTeachingStatement(s);
+      showToast(`Teacher ${name} added to statement!`);
+    }
+
+    function deleteTeacher(id) {
+      const s = getActiveSchool();
+      s.teachingStaff = s.teachingStaff.filter(t => t.id !== id);
+      saveSchools();
+      renderTeachingStatement(s);
+      showToast('Teacher record removed.');
+    }
+
+    function editTeacher(id) {
+      showToast('Teacher edit mode opened. Modify records in modal.', 'info');
+      openAddTeacherModal();
+    }
+
+    // Non-Teaching Statement
+    function renderNonTeachingStatement(s) {
+      const tbody = document.getElementById('nonTeachingStaffTableBody');
+      tbody.innerHTML = (s.nonTeachingStaff || []).map((nt, i) => `
+        <tr class="hover:bg-slate-50 border-b border-slate-100">
+          <td class="p-2.5 font-bold">${i + 1}</td>
+          <td class="p-2.5">
+            <span class="font-bold text-slate-900 block">${nt.name}</span>
+            <span class="text-[10px] text-slate-500">S/O ${nt.father}</span>
+          </td>
+          <td class="p-2.5 font-medium text-slate-700">${nt.desig}</td>
+          <td class="p-2.5 font-mono font-bold">${nt.bps}</td>
+          <td class="p-2.5 font-mono">${nt.phone}</td>
+          <td class="p-2.5 text-center">
+            <button onclick="deleteNonTeacher(${nt.id})" class="px-2 py-1 bg-red-600 text-white rounded text-[10px] font-bold">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function deleteNonTeacher(id) {
+      const s = getActiveSchool();
+      s.nonTeachingStaff = s.nonTeachingStaff.filter(nt => nt.id !== id);
+      saveSchools();
+      renderNonTeachingStatement(s);
+    }
+
+    // Vacancy Position (Teaching)
+    function renderVacancyTeaching(s) {
+      const tbody = document.getElementById('vacancyTeachingTableBody');
+      tbody.innerHTML = (s.vacanciesTeaching || []).map((v, i) => `
+        <tr class="hover:bg-slate-50 border-b border-slate-100">
+          <td class="p-2.5 font-bold">${i + 1}</td>
+          <td class="p-2.5 font-bold text-slate-900">${v.post}</td>
+          <td class="p-2.5 text-center font-mono font-bold">${v.bps}</td>
+          <td class="p-2.5 text-center font-bold">${v.sanctioned}</td>
+          <td class="p-2.5 text-center font-bold text-emerald-700">${v.working}</td>
+          <td class="p-2.5 text-center font-bold text-red-600">${v.vacant}</td>
+          <td class="p-2.5 text-center">
+            <button onclick="deleteVacancy(${v.id}, 'teaching')" class="px-2 py-0.5 bg-red-600 text-white rounded text-[10px]">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderVacancyNonTeaching(s) {
+      const tbody = document.getElementById('vacancyNonTeachingTableBody');
+      tbody.innerHTML = (s.vacanciesNonTeaching || []).map((v, i) => `
+        <tr class="hover:bg-slate-50 border-b border-slate-100">
+          <td class="p-2.5 font-bold">${i + 1}</td>
+          <td class="p-2.5 font-bold text-slate-900">${v.post}</td>
+          <td class="p-2.5 text-center font-mono font-bold">${v.bps}</td>
+          <td class="p-2.5 text-center font-bold">${v.sanctioned}</td>
+          <td class="p-2.5 text-center font-bold text-emerald-700">${v.working}</td>
+          <td class="p-2.5 text-center font-bold text-red-600">${v.vacant}</td>
+          <td class="p-2.5 text-center">
+            <button onclick="deleteVacancy(${v.id}, 'nonteaching')" class="px-2 py-0.5 bg-red-600 text-white rounded text-[10px]">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    let currentVacancyType = 'teaching';
+    function openAddVacancyModal(type) {
+      currentVacancyType = type;
+      document.getElementById('vacModalTitle').textContent = `Add Vacancy Post (${type === 'teaching' ? 'Teaching' : 'Non-Teaching'})`;
+      document.getElementById('addVacancyModal').classList.remove('hidden');
+    }
+    function closeAddVacancyModal() { document.getElementById('addVacancyModal').classList.add('hidden'); }
+
+    function handleAddVacancySubmit(e) {
+      e.preventDefault();
+      const s = getActiveSchool();
+      const post = document.getElementById('vacPostName').value.trim();
+      const bps = Number(document.getElementById('vacBps').value);
+      const sanc = Number(document.getElementById('vacSanc').value);
+      const work = Number(document.getElementById('vacWork').value);
+      const vac = Math.max(0, sanc - work);
+
+      const item = { id: Date.now(), post: post, bps: bps, sanctioned: sanc, working: work, vacant: vac };
+
+      if (currentVacancyType === 'teaching') {
+        s.vacanciesTeaching.push(item);
+        renderVacancyTeaching(s);
+      } else {
+        s.vacanciesNonTeaching.push(item);
+        renderVacancyNonTeaching(s);
+      }
+
+      saveSchools();
+      closeAddVacancyModal();
+      showToast('Vacancy record updated!');
+    }
+
+    function deleteVacancy(id, type) {
+      const s = getActiveSchool();
+      if (type === 'teaching') s.vacanciesTeaching = s.vacanciesTeaching.filter(v => v.id !== id);
+      else s.vacanciesNonTeaching = s.vacanciesNonTeaching.filter(v => v.id !== id);
+      saveSchools();
+      if (type === 'teaching') renderVacancyTeaching(s);
+      else renderVacancyNonTeaching(s);
+    }
+
+    // General School Info
+    function renderSchoolGeneralInfo(s) {
+      const g = s.generalInfo || {};
+      document.getElementById('genInfo_markaz').value = s.markaz;
+      document.getElementById('genInfo_mouza').value = g.mouza || '';
+      document.getElementById('genInfo_ucName').value = g.ucName || '';
+      document.getElementById('genInfo_ucNo').value = g.ucNo || '';
+      document.getElementById('genInfo_pop').value = g.population || '';
+      document.getElementById('genInfo_na').value = g.na || 'NA-147';
+      document.getElementById('genInfo_pp').value = g.pp || 'PP-210';
+      document.getElementById('genInfo_police').value = g.policeStation || 'JAHANIAN';
+      document.getElementById('genInfo_type').value = g.type || 'Rural';
+      document.getElementById('genInfo_cat').value = g.category || 'Only Boys';
+      document.getElementById('genInfo_kanal').value = g.kanal || 4;
+      document.getElementById('genInfo_marla').value = g.marla || 0;
+      document.getElementById('genInfo_covered').value = g.covered || '';
+      document.getElementById('genInfo_water').value = g.water || 'Yes';
+      document.getElementById('genInfo_waterRes').value = g.waterRes || 'Electric Pump / Turbine';
+      document.getElementById('genInfo_elec').value = g.elec || 'Yes';
+      document.getElementById('genInfo_shift').value = g.shift || 'Single Shift';
+    }
+
+    function saveSchoolGeneralInfo() {
+      const s = getActiveSchool();
+      s.generalInfo = {
+        mouza: document.getElementById('genInfo_mouza').value,
+        ucName: document.getElementById('genInfo_ucName').value,
+        ucNo: document.getElementById('genInfo_ucNo').value,
+        population: Number(document.getElementById('genInfo_pop').value),
+        na: document.getElementById('genInfo_na').value,
+        pp: document.getElementById('genInfo_pp').value,
+        policeStation: document.getElementById('genInfo_police').value,
+        type: document.getElementById('genInfo_type').value,
+        category: document.getElementById('genInfo_cat').value,
+        kanal: Number(document.getElementById('genInfo_kanal').value),
+        marla: Number(document.getElementById('genInfo_marla').value),
+        covered: document.getElementById('genInfo_covered').value,
+        water: document.getElementById('genInfo_water').value,
+        waterRes: document.getElementById('genInfo_waterRes').value,
+        elec: document.getElementById('genInfo_elec').value,
+        shift: document.getElementById('genInfo_shift').value
+      };
+      saveSchools();
+      showToast('School General Information updated!');
+    }
+
+    // Building Record
+    function renderSchoolBuildingInfo(s) {
+      const b = s.buildingRecord || {};
+      document.getElementById('bld_have').value = b.haveBuilding || 'Yes';
+      document.getElementById('bld_owner').value = b.owner || 'Education Department';
+      document.getElementById('bld_status').value = b.status || 'Satisfactory Concrete';
+      document.getElementById('bld_wall').value = b.boundaryWall || 'Completed';
+      document.getElementById('bld_danger').value = b.dangerous || 'No';
+      document.getElementById('bld_dangerRooms').value = b.dangerRooms || 0;
+      document.getElementById('bld_totalRooms').value = b.totalRooms || 6;
+      document.getElementById('bld_teachRooms').value = b.teachRooms || 4;
+      document.getElementById('bld_officeRooms').value = b.officeRooms || 2;
+      document.getElementById('bld_toilets').value = b.toilets || 3;
+      document.getElementById('bld_toiletStatus').value = b.toiletStatus || 'Functional';
+      document.getElementById('bld_gps').value = b.gps || '';
+      document.getElementById('bld_gate').value = b.gate || 'Yes';
+      document.getElementById('bld_emGate').value = b.emGate || 'Yes';
+      document.getElementById('bld_req').value = b.req || '';
+    }
+
+    function saveSchoolBuildingInfo() {
+      const s = getActiveSchool();
+      s.buildingRecord = {
+        haveBuilding: document.getElementById('bld_have').value,
+        owner: document.getElementById('bld_owner').value,
+        status: document.getElementById('bld_status').value,
+        boundaryWall: document.getElementById('bld_wall').value,
+        dangerous: document.getElementById('bld_danger').value,
+        dangerRooms: Number(document.getElementById('bld_dangerRooms').value),
+        totalRooms: Number(document.getElementById('bld_totalRooms').value),
+        teachRooms: Number(document.getElementById('bld_teachRooms').value),
+        officeRooms: Number(document.getElementById('bld_officeRooms').value),
+        toilets: Number(document.getElementById('bld_toilets').value),
+        toiletStatus: document.getElementById('bld_toiletStatus').value,
+        gps: document.getElementById('bld_gps').value,
+        gate: document.getElementById('bld_gate').value,
+        emGate: document.getElementById('bld_emGate').value,
+        req: document.getElementById('bld_req').value
+      };
+      saveSchools();
+      showToast('School Building Record updated!');
+    }
+
+    // ==================== ACCOUNTS ENGINE (NSB & FTF ACROSS ALL MONTHS/YEARS) ====================
+    function getAccountData(s, year, month, fund) {
+      if (!s.accounts) s.accounts = {};
+      if (!s.accounts[year]) s.accounts[year] = {};
+      if (!s.accounts[year][month]) s.accounts[year][month] = {};
+      if (!s.accounts[year][month][fund]) {
+        s.accounts[year][month][fund] = {
+          opening2026: fund === 'NSB' ? 250000 : 30000,
+          creditMonth: 0,
+          expMonth: 0
+        };
+      }
+      return s.accounts[year][month][fund];
+    }
+
+    function computeNetAccount(s, year, month, fund) {
+      const data = getAccountData(s, year, month, fund);
+      const open = Number(data.opening2026) || 0;
+      const credit = Number(data.creditMonth) || 0;
+      const exp = Number(data.expMonth) || 0;
+      return open + credit - exp;
+    }
+
+    function renderSchoolAccounts() {
+      const s = getActiveSchool();
+      const fund = document.getElementById('accFundSelect').value;
+      const year = document.getElementById('accYearSelect').value;
+      const month = document.getElementById('accMonthSelect').value;
+
+      document.getElementById('accFormHeading').textContent = `${fund} Return for ${month} (${year})`;
+
+      const data = getAccountData(s, year, month, fund);
+      document.getElementById('inputAccOpening').value = data.opening2026 || 0;
+      document.getElementById('inputAccCredit').value = data.creditMonth || 0;
+      document.getElementById('inputAccExp').value = data.expMonth || 0;
+
+      calcNetBalanceLive();
+    }
+
+    function calcNetBalanceLive() {
+      const open = Number(document.getElementById('inputAccOpening').value) || 0;
+      const credit = Number(document.getElementById('inputAccCredit').value) || 0;
+      const exp = Number(document.getElementById('inputAccExp').value) || 0;
+      const net = open + credit - exp;
+
+      document.getElementById('calculatedNetBalLabel').textContent = `PKR ${net.toLocaleString()}`;
+    }
+
+    function saveSchoolAccountRecord() {
+      const s = getActiveSchool();
+      const fund = document.getElementById('accFundSelect').value;
+      const year = document.getElementById('accYearSelect').value;
+      const month = document.getElementById('accMonthSelect').value;
+
+      const open = Number(document.getElementById('inputAccOpening').value) || 0;
+      const credit = Number(document.getElementById('inputAccCredit').value) || 0;
+      const exp = Number(document.getElementById('inputAccExp').value) || 0;
+
+      if (exp > (open + credit)) {
+        showToast('Warning: Expenditure exceeds available funds!', 'error');
+      }
+
+      if (!s.accounts[year]) s.accounts[year] = {};
+      if (!s.accounts[year][month]) s.accounts[year][month] = {};
+      s.accounts[year][month][fund] = {
+        opening2026: open,
+        creditMonth: credit,
+        expMonth: exp
+      };
+
+      saveSchools();
+      showToast(`${fund} Return for ${month} (${year}) Saved!`);
+      renderSchoolDashboard(s);
+    }
+
+    function renderCostCenter(s) {
+      document.getElementById('schoolDdoCode').value = s.costCenter?.ddoCode || '';
+      document.getElementById('schoolCostCenterName').value = s.costCenter?.costCenterName || '';
+    }
+
+    function saveCostCenter() {
+      const s = getActiveSchool();
+      s.costCenter = {
+        ddoCode: document.getElementById('schoolDdoCode').value.trim(),
+        costCenterName: document.getElementById('schoolCostCenterName').value.trim()
+      };
+      saveSchools();
+      showToast('Cost Center Saved!');
+    }
+
+    function renderLabs(s) {
+      document.getElementById('lab_status').value = s.labs?.status || 'Functional IT Lab';
+      document.getElementById('lab_computers').value = s.labs?.computers || 0;
+      document.getElementById('lab_science').value = s.labs?.science || 'Available & Complete';
+    }
+
+    function saveLabs() {
+      const s = getActiveSchool();
+      s.labs = {
+        status: document.getElementById('lab_status').value,
+        computers: Number(document.getElementById('lab_computers').value),
+        science: document.getElementById('lab_science').value
+      };
+      saveSchools();
+      showToast('Lab information saved!');
+    }
+
+    // ==================== ADMIN CONSOLE RENDERING ====================
+    function setAdminSection(sec) {
+      state.adminSection = sec;
+      document.querySelectorAll('.admin-sec-pane').forEach(el => el.classList.add('hidden'));
+      const target = document.getElementById(`adminSec_${sec}`);
+      if (target) target.classList.remove('hidden');
+
+      document.querySelectorAll('.admin-nav-btn').forEach(btn => {
+        if (btn.dataset.sec === sec) {
+          btn.className = "admin-nav-btn w-full flex items-center px-3 py-2.5 rounded-lg font-bold bg-blue-50 text-blue-900 border border-blue-200 transition";
+        } else {
+          btn.className = "admin-nav-btn w-full flex items-center px-3 py-2.5 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition";
+        }
+      });
+
+      if (sec === 'tehsil_overview') renderAdminOverview();
+      if (sec === 'schools_directory') renderAdminSchoolCards();
+      if (sec === 'admin_accounts') renderAdminConsolidatedFinance();
+      if (sec === 'admin_reports') renderAdminReports();
+    }
+
+    function renderAdminOverview() {
+      const filter = document.getElementById('adminMarkazFilterSelect')?.value || 'ALL';
+      let list = state.schools;
+      if (filter !== 'ALL') {
+        list = list.filter(s => s.markaz === filter);
+      }
+
+      const totalSchools = list.length;
+      const totalEnr = list.reduce((a, b) => a + (b.attendance?.studentsEnrolled || 0), 0);
+      const totalPres = list.reduce((a, b) => a + (b.attendance?.studentsPresent || 0), 0);
+      const overallRate = totalEnr > 0 ? Math.round((totalPres / totalEnr) * 100) : 0;
+      const totalNsb = list.reduce((a, b) => a + computeNetAccount(b, '2026-2027', 'October', 'NSB'), 0);
+
+      document.getElementById('adminSummaryCards').innerHTML = `
+        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+          <span class="text-[10px] font-bold text-slate-500 uppercase">Monitored Schools</span>
+          <p class="text-2xl font-black text-slate-900 mt-1">${totalSchools}</p>
+          <span class="text-[10px] text-blue-700 font-bold">${filter === 'ALL' ? 'Both Markazes' : filter}</span>
+        </div>
+        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+          <span class="text-[10px] font-bold text-emerald-600 uppercase">Students Turnout</span>
+          <p class="text-2xl font-black text-emerald-700 mt-1">${overallRate}%</p>
+          <span class="text-[10px] text-slate-500">${totalPres.toLocaleString()} of ${totalEnr.toLocaleString()} enrolled</span>
+        </div>
+        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+          <span class="text-[10px] font-bold text-indigo-600 uppercase">Teachers on Duty</span>
+          <p class="text-2xl font-black text-indigo-700 mt-1">${list.reduce((a, b) => a + (b.attendance?.teaching?.present || 0), 0)}</p>
+          <span class="text-[10px] text-slate-500">Across verified returns</span>
+        </div>
+        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+          <span class="text-[10px] font-bold text-emerald-800 uppercase">Net NSB Available</span>
+          <p class="text-lg sm:text-xl font-black text-emerald-800 mt-1 font-mono">Rs. ${totalNsb.toLocaleString()}</p>
+          <span class="text-[10px] text-emerald-600">October 2026 Balance</span>
+        </div>
+      `;
+
+      // Quick table with click to inspect
+      const tbody = document.getElementById('adminQuickSchoolsTableBody');
+      tbody.innerHTML = list.map(s => {
+        const att = s.attendance || {};
+        const nsbBal = computeNetAccount(s, '2026-2027', 'October', 'NSB');
+        return `
+          <tr class="hover:bg-blue-50/70 transition cursor-pointer" onclick="inspectSchool('${s.emis}')">
+            <td class="p-3 font-mono font-bold text-blue-900">${s.emis}</td>
+            <td class="p-3">
+              <span class="font-bold text-slate-900 hover:text-blue-700 block">${s.name}</span>
+              <span class="text-[10px] text-slate-500">${s.level} &bull; Head: ${s.head} (${s.headCell})</span>
+            </td>
+            <td class="p-3">
+              <span class="font-semibold text-slate-700 block">${s.markaz}</span>
+              <span class="text-[10px] text-blue-800">AEO: ${s.aeo}</span>
+            </td>
+            <td class="p-3 text-center font-bold font-mono">${att.studentsEnrolled || 0}</td>
+            <td class="p-3 text-center">
+              <span class="px-2 py-0.5 rounded text-xs font-bold ${att.rate >= 80 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                ${att.rate || 0}% (${att.studentsPresent || 0})
+              </span>
+            </td>
+            <td class="p-3 text-center font-bold text-slate-700">${att.teaching?.present || 0} / ${att.teaching?.working || 0}</td>
+            <td class="p-3 text-right font-mono font-bold text-emerald-700">Rs. ${nsbBal.toLocaleString()}</td>
+            <td class="p-3 text-center">
+              <button onclick="event.stopPropagation(); inspectSchool('${s.emis}')" class="px-2.5 py-1 bg-[#1e3a8a] hover:bg-blue-900 text-white rounded text-[10px] font-bold shadow">
+                Inspect
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderAdminSchoolCards() {
+      const grid = document.getElementById('adminSchoolCardsGrid');
+      grid.innerHTML = state.schools.map(s => {
+        const nsb = computeNetAccount(s, '2026-2027', 'October', 'NSB');
+        const att = s.attendance || {};
+        return `
+          <div onclick="inspectSchool('${s.emis}')" class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition cursor-pointer space-y-2">
+            <div class="flex justify-between items-start">
+              <span class="font-mono text-xs font-bold text-blue-900 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">${s.emis}</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded ${s.markaz.includes('Jahanian') ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'}">${s.markaz}</span>
+            </div>
+            <h4 class="font-bold text-sm text-slate-900 leading-snug">${s.name}</h4>
+            <div class="text-[11px] text-slate-500 space-y-0.5">
+              <p>Head: <strong class="text-slate-700">${s.head}</strong> (<a href="tel:${s.headCell}" onclick="event.stopPropagation()" class="text-blue-700 font-bold">${s.headCell}</a>)</p>
+              <p>AEO: <strong class="text-slate-700">${s.aeo}</strong></p>
+            </div>
+            <div class="pt-2 border-t flex justify-between items-center text-xs font-mono">
+              <span>Enrolled: <strong>${att.studentsEnrolled || 0}</strong></span>
+              <span class="text-emerald-700 font-bold">NSB: Rs. ${nsb.toLocaleString()}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filterSchoolsList() {
+      const q = document.getElementById('adminSearchInput').value.toLowerCase();
+      document.querySelectorAll('#adminSchoolCardsGrid > div').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(q) ? 'block' : 'none';
+      });
+    }
+
+    // ==================== 360° SCHOOL DOSSIER MODAL ====================
+    function inspectSchool(emis) {
+      state.inspectingSchoolEmis = emis;
+      const s = state.schools.find(x => x.emis === emis);
+      if (!s) return;
+
+      document.getElementById('dossierEmisBadge').textContent = s.emis;
+      document.getElementById('dossierTitle').textContent = `${s.name} (${s.level})`;
+      document.getElementById('dossierMeta').innerHTML = `
+        Markaz: <strong>${s.markaz}</strong> &bull; AEO: <strong>${s.aeo}</strong> (${s.aeoCell}) &bull; Head: <strong>${s.head}</strong> (${s.headCell})
+      `;
+
+      const att = s.attendance || {};
+      const nsb = computeNetAccount(s, '2026-2027', 'October', 'NSB');
+      const ftf = computeNetAccount(s, '2026-2027', 'October', 'FTF');
+      const b = s.buildingRecord || {};
+      const g = s.generalInfo || {};
+
+      document.getElementById('dossierContent').innerHTML = `
+        <!-- Attendance Snapshot -->
+        <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+          <h4 class="text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <i class="fa-solid fa-clipboard-user text-emerald-700"></i> Daily Attendance & Staff Snapshot
+          </h4>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+            <div>Current Enrolled: <strong class="text-slate-900">${att.studentsEnrolled || 0}</strong></div>
+            <div>Students Present: <strong class="text-emerald-800">${att.studentsPresent || 0} (${att.rate || 0}%)</strong></div>
+            <div>Teachers: <strong class="text-slate-900">${att.teaching?.present || 0} / ${att.teaching?.working || 0} Present</strong></div>
+            <div>Non-Teaching: <strong class="text-slate-900">${att.nonteaching?.present || 0} Present</strong></div>
+          </div>
+        </div>
+
+        <!-- Accounts Snapshot -->
+        <div class="p-4 bg-blue-50 rounded-xl border border-blue-200">
+          <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <i class="fa-solid fa-sack-dollar text-blue-700"></i> Financial Balance (October 2026 Return)
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
+            <div class="bg-white p-2.5 rounded border border-blue-200">
+              <span class="text-slate-500 block text-[10px]">NON-SALARY BUDGET (NSB)</span>
+              <strong class="text-emerald-800 text-sm">Rs. ${nsb.toLocaleString()} Available</strong>
+            </div>
+            <div class="bg-white p-2.5 rounded border border-blue-200">
+              <span class="text-slate-500 block text-[10px]">FAROGH-E-TALEEM FUND (FTF)</span>
+              <strong class="text-blue-800 text-sm">Rs. ${ftf.toLocaleString()} Available</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Building & Infrastructure -->
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
+          <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Building &amp; Asset Verification</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-slate-700">
+            <div>Total Rooms: <strong>${b.totalRooms || 0}</strong></div>
+            <div>Teaching Rooms: <strong>${b.teachRooms || 0}</strong></div>
+            <div>Dangerous Rooms: <strong class="text-red-600">${b.dangerRooms || 0}</strong></div>
+            <div>Boundary Wall: <strong>${b.boundaryWall || 'N/A'}</strong></div>
+            <div>Toilets: <strong>${b.toilets || 0} (${b.toiletStatus || 'N/A'})</strong></div>
+            <div>Drinking Water: <strong>${g.water || 'Yes'} (${g.waterRes || 'Electric Pump'})</strong></div>
+            <div>Electricity: <strong>${g.elec || 'Yes'}</strong></div>
+            <div>IT Lab: <strong>${s.labs?.status || 'N/A'}</strong></div>
+          </div>
+        </div>
+
+        <!-- Contact Links -->
+        <div class="flex flex-wrap gap-2 pt-1">
+          <a href="tel:${s.headCell}" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded text-xs font-bold flex items-center gap-1.5"><i class="fa-solid fa-phone"></i> Call Head: ${s.headCell}</a>
+          <a href="tel:${s.aeoCell}" class="px-3 py-1.5 bg-blue-800 hover:bg-blue-900 text-white rounded text-xs font-bold flex items-center gap-1.5"><i class="fa-solid fa-phone"></i> Call AEO: ${s.aeoCell}</a>
+        </div>
+      `;
+
+      document.getElementById('schoolDossierModal').classList.remove('hidden');
+    }
+
+    function closeDossierModal() {
+      document.getElementById('schoolDossierModal').classList.add('hidden');
+    }
+
+    // Consolidated Finance Table
+    function renderAdminConsolidatedFinance() {
+      const tbody = document.getElementById('adminConsolidatedFinanceTable');
+      tbody.innerHTML = state.schools.map(s => {
+        const nsbData = getAccountData(s, '2026-2027', 'October', 'NSB');
+        const netNSB = computeNetAccount(s, '2026-2027', 'October', 'NSB');
+        const netFTF = computeNetAccount(s, '2026-2027', 'October', 'FTF');
+
+        return `
+          <tr class="hover:bg-slate-50 border-b border-slate-100">
+            <td class="p-2.5 font-bold">${s.emis}</td>
+            <td class="p-2.5 font-sans font-bold text-slate-900">${s.name}</td>
+            <td class="p-2.5 font-sans">${s.markaz}</td>
+            <td class="p-2.5 text-right">Rs. ${(nsbData.opening2026 || 0).toLocaleString()}</td>
+            <td class="p-2.5 text-right text-blue-700">+Rs. ${(nsbData.creditMonth || 0).toLocaleString()}</td>
+            <td class="p-2.5 text-right text-red-600">-Rs. ${(nsbData.expMonth || 0).toLocaleString()}</td>
+            <td class="p-2.5 text-right font-black text-emerald-800">Rs. ${netNSB.toLocaleString()}</td>
+            <td class="p-2.5 text-right font-black text-blue-800">Rs. ${netFTF.toLocaleString()}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Consolidated Master Reports
+    function renderAdminReports() {
+      const tbody = document.getElementById('reportMasterTableBody');
+      tbody.innerHTML = state.schools.map(s => {
+        const att = s.attendance || {};
+        const nsb = computeNetAccount(s, '2026-2027', 'October', 'NSB');
+        const b = s.buildingRecord || {};
+        return `
+          <tr class="border-b border-slate-300">
+            <td class="p-2 font-mono font-bold">${s.emis}</td>
+            <td class="p-2 font-bold">${s.name}</td>
+            <td class="p-2">${s.markaz} <span class="block text-[10px] text-slate-500">AEO: ${s.aeo}</span></td>
+            <td class="p-2 text-center font-bold">${att.studentsEnrolled || 0}</td>
+            <td class="p-2 text-center font-bold">${att.rate || 0}%</td>
+            <td class="p-2 text-center">${att.teaching?.present || 0} / ${att.teaching?.working || 0}</td>
+            <td class="p-2 text-right font-mono font-bold text-emerald-800">Rs. ${nsb.toLocaleString()}</td>
+            <td class="p-2 text-center">${b.totalRooms || 0}</td>
+            <td class="p-2 text-center text-red-600 font-bold">${b.dangerRooms || 0}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // CSV Spreadsheet Exporter
+    function exportAllCsv() {
+      const headers = [
+        "EMIS Code", "School Name", "Level", "Markaz", "AEO Name", "AEO Phone", "Head Teacher", "Head Phone",
+        "Enrolled", "Present", "Attendance %", "Teaching Staff Present", "Non-Teaching Present",
+        "NSB Bal on 30-06-2026", "NSB Credit This Month", "NSB Exp Till Month", "Net NSB Balance",
+        "Total Rooms", "Dangerous Rooms", "Drinking Water", "Electricity", "DDEO Authority"
+      ];
+
+      const rows = state.schools.map(s => {
+        const att = s.attendance || {};
+        const nsbData = getAccountData(s, '2026-2027', 'October', 'NSB');
+        const netNSB = computeNetAccount(s, '2026-2027', 'October', 'NSB');
+        const b = s.buildingRecord || {};
+        const g = s.generalInfo || {};
+
+        return [
+          `"${s.emis}"`,
+          `"${s.name}"`,
+          `"${s.level}"`,
+          `"${s.markaz}"`,
+          `"${s.aeo}"`,
+          `"${s.aeoCell}"`,
+          `"${s.head}"`,
+          `"${s.headCell}"`,
+          att.studentsEnrolled || 0,
+          att.studentsPresent || 0,
+          `${att.rate || 0}%`,
+          att.teaching?.present || 0,
+          att.nonteaching?.present || 0,
+          nsbData.opening2026 || 0,
+          nsbData.creditMonth || 0,
+          nsbData.expMonth || 0,
+          netNSB,
+          b.totalRooms || 0,
+          b.dangerRooms || 0,
+          `"${g.water || 'Yes'}"`,
+          `"${g.elec || 'Yes'}"`,
+          `"${DY_DEO_NAME}"`
+        ];
+      });
+
+      const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `DDEO_Jahanian_Consolidated_Ledger_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('Exported CSV spreadsheet for District Education Authority');
+    }
+
+    // Initialize application on load
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
