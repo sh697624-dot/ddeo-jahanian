@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Office of Dy. DEO (EE-M) Tehsil Jahanian</title>
+  <!-- Tailwind CSS & Icons & Utilities -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #fff !important; }
+      #printableArea { display: block !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen flex flex-col relative">
+
+  <!-- Off-Canvas Mobile Drawer Overlay -->
+  <div id="drawerOverlay" onclick="toggleNavDrawer()" class="fixed inset-0 bg-slate-950/60 z-50 transition-opacity hidden"></div>
+
+  <!-- Off-Canvas Sidebar / Navigation Drawer -->
+  <aside id="navDrawer" class="fixed top-0 left-0 bottom-0 w-80 bg-white shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 flex flex-col">
+    <!-- Drawer Top Header -->
+    <div class="p-4 bg-gradient-to-r from-blue-900 to-indigo-950 text-white flex justify-between items-center shadow">
+      <div class="flex items-center space-x-2">
+        <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center border border-white/20 text-amber-300">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div>
+          <h2 class="text-xs font-black uppercase tracking-wider">DDEO JAHANIAN</h2>
+          <p class="text-[10px] text-blue-200">Navigation & Administration</p>
+        </div>
+      </div>
+      <button onclick="toggleNavDrawer()" class="text-white/80 hover:text-white p-1 rounded-lg">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+    </div>
+
+    <!-- User Status Banner inside Drawer -->
+    <div class="p-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+      <div class="truncate pr-2">
+        <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Current Session</div>
+        <div id="drawerSessionLabel" class="text-xs font-bold text-blue-950 truncate">Not Logged In</div>
+      </div>
+      <button id="drawerQuickLogoutBtn" onclick="terminateUserSession()" class="hidden px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-700 text-xs font-bold rounded border border-red-200 flex items-center gap-1 transition">
+        <i class="fa-solid fa-power-off text-[10px]"></i> Logout
+      </button>
+    </div>
+
+    <!-- Drawer Navigation Links -->
+    <nav class="flex-1 overflow-y-auto p-3 space-y-1 text-xs font-medium" id="drawerNavLinks">
+      <!-- Injected dynamically based on role -->
+    </nav>
+
+    <!-- Drawer Supervisory Footer -->
+    <div class="p-3 bg-blue-50/70 border-t border-blue-200 text-[11px] space-y-1">
+      <div class="font-bold text-blue-950 flex items-center justify-between">
+        <span><i class="fa-solid fa-shield-halved text-blue-800 mr-1"></i> IT & Budget In-Charge</span>
+        <span class="text-[9px] bg-blue-200 px-1 rounded font-mono font-bold">DDEO</span>
+      </div>
+      <div class="font-bold text-slate-800">Syed Hassan Aslam</div>
+      <div class="text-[10px] text-blue-800 font-mono">sh697624@gmail.com</div>
+      <div class="pt-1.5 border-t border-blue-200/60 flex flex-col gap-0.5 text-[10px] text-slate-600">
+        <div><strong>AEO Jahanian:</strong> 0300-6881239</div>
+        <div><strong>AEO Thatha Sadiq Abad:</strong> 0308-5732719</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Top Blue Government Navigation Header -->
+  <header class="bg-[#1e3a8a] text-white shadow sticky top-0 z-40 border-b-2 border-amber-400 no-print">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <!-- 3-Bars Mobile & Desktop Menu Trigger -->
+        <button onclick="toggleNavDrawer()" class="text-white hover:text-amber-300 p-2 rounded-lg bg-blue-950/60 border border-blue-400/30 focus:outline-none flex items-center gap-1.5">
+          <i class="fa-solid fa-bars text-base"></i>
+          <span class="text-xs font-bold hidden sm:inline">Menu</span>
+        </button>
+        <div class="flex items-center space-x-2">
+          <div class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center border border-white/20 text-amber-300 shadow">
+            <i class="fa-solid fa-landmark text-base"></i>
+          </div>
+          <div>
+            <h1 class="text-xs sm:text-sm md:text-base font-black tracking-tight uppercase leading-tight">
+              OFFICE OF THE DEPUTY DISTRICT EDUCATION OFFICER (EE-M)
+            </h1>
+            <p class="text-[10px] sm:text-xs text-blue-200 font-medium">Tehsil Jahanian, District Khanewal • School Monitoring & Accounts Portal</p>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2 text-right">
+        <div class="hidden md:block text-xs">
+          <div class="font-bold text-amber-300 leading-tight">Dr. Muhammad Salim Akhter</div>
+          <div class="text-[10px] text-blue-200">Dy. District Education Officer (EE-M)</div>
+        </div>
+        <div id="topUserBadge" class="hidden text-xs bg-blue-950 px-2.5 py-1.5 rounded-lg border border-blue-400/40 flex items-center gap-2"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Viewport Workspace -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 overflow-y-auto" id="mainContainer">
+    <!-- Rendered via JS -->
+  </main>
+
+  <script>
+    // 30 Verified Seed Schools Database for Tehsil Jahanian
+    const schoolsMasterList = [
+      { emis: "36440080", name: "GMS JAHANIAN", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Middle", head: "SHAHID MEHMOOD", headCell: "0301-7537508" },
+      { emis: "36440313", name: "GMS 103/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Middle", head: "ATTIQ UR REHMAN", headCell: "0308-7835405" },
+      { emis: "36440262", name: "GMS NO 3", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Middle", head: "M JAMIL ANJUM", headCell: "0302-7818878" },
+      { emis: "36440298", name: "GMS 150/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Middle", head: "SAIF ULLAH", headCell: "0302-4913321" },
+      { emis: "36440318", name: "GMS 93/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Middle", head: "HABIB UL REHMAN", headCell: "0341-0666133" },
+      { emis: "36440328", name: "GMS 157/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Middle", head: "RAO MUSHTAQ AHMAD", headCell: "0303-7359108" },
+      { emis: "36440084", name: "GMS RAHIM SHAH", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Middle", head: "AZIZ AHMED", headCell: "0300-6998248" },
+      { emis: "36440089", name: "GMS 152/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Middle", head: "MUZAMMAL KHAN", headCell: "0300-2622145" },
+      { emis: "36440302", name: "GPS 158/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Primary", head: "GHAZANFAR ABBAS", headCell: "0300-0791758" },
+      { emis: "36440329", name: "GPS 163/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Primary", head: "MAQSOOD AHMAD", headCell: "0300-6642782" },
+      { emis: "36440263", name: "GPS 104/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Primary", head: "MUBASHAR RAMZAN", headCell: "0334-9916954" },
+      { emis: "36440287", name: "GPS 110/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Primary", head: "MAQSOOD AHMAD", headCell: "0303-7709003" },
+      { emis: "36440334", name: "GPS 97/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Primary", head: "ABDUL NAEEM", headCell: "0304-5370868" },
+      { emis: "36440307", name: "GPS 101/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Primary", head: "ABID HUSSAIN WAQAS", headCell: "0300-8323143" },
+      { emis: "36440306", name: "GPS 102/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Primary", head: "MUHAMMAD ASLAM", headCell: "0300-2020464" },
+      { emis: "36440316", name: "GPS 160/10.R", markaz: "Jahanian-Male", aeo: "Muhammad Iftikhar Shahid", aeoCell: "0300-6881239", level: "Primary", head: "USMAN RASHEED", headCell: "0300-7386573" },
+      { emis: "36440088", name: "GMS THATHA", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Middle", head: "RANA ASGHAR ALI", headCell: "0304-0176346" },
+      { emis: "36440289", name: "GMS 130/10.R", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Middle", head: "NASIR MEHMOOD", headCell: "0300-7003626" },
+      { emis: "36440083", name: "GMS 121/10.R", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Middle", head: "MUHAMMAD IMRAN AMIR", headCell: "0300-6333726" },
+      { emis: "36440304", name: "GMS 139/10.R", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Middle", head: "MUHAMMAD ABDULLAH", headCell: "0307-6978148" },
+      { emis: "36440085", name: "GMS 118/10.R", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Middle", head: "MUHAMMAD MUNIR", headCell: "0307-7403153" },
+      { emis: "36440087", name: "GMS BHIRKI", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Middle", head: "MUKHTIYAR AHMAD", headCell: "0306-7245192" },
+      { emis: "36440284", name: "GPS KANDI WALA", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Primary", head: "HAFEEZ AKHTAR", headCell: "0300-2927118" },
+      { emis: "36440281", name: "GPS 135/10.R", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Primary", head: "MUHAMMAD ARSHAD", headCell: "0311-8315137" },
+      { emis: "36440260", name: "GPS 111/10.R", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Primary", head: "M RASHID", headCell: "0308-6757882" },
+      { emis: "36440261", name: "GPS NO.2", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Primary", head: "M SHAFIQ", headCell: "0301-7560631" },
+      { emis: "36440308", name: "GPS 112/10.R", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Primary", head: "MUHAMMAD JAFAR SIDDIQ", headCell: "0306-8397179" },
+      { emis: "36440278", name: "GPS 134/10.R", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Primary", head: "ALLAH DITTAH", headCell: "0302-7419194" },
+      { emis: "36440292", name: "GPS PIR JHN", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Primary", head: "M YOUSAF", headCell: "0343-7201133" },
+      { emis: "36440340", name: "GPS BILO CHANWALI", markaz: "Thatha Sadiq Abad-Male", aeo: "Sajid Ali Gill", aeoCell: "0308-5732719", level: "Primary", head: "M YOUNAS SOHAIL", headCell: "0304-7145214" }
+    ];
+
+    let portal = {
+      user: JSON.parse(localStorage.getItem('portal_user') || 'null'),
+      schools: JSON.parse(localStorage.getItem('portal_schools') || JSON.stringify(schoolsMasterList)),
+      headPasswords: JSON.parse(localStorage.getItem('portal_head_passes') || '{}'),
+      adminPassword: localStorage.getItem('portal_admin_pass') || 'admin@111',
+      db: JSON.parse(localStorage.getItem('portal_database') || '{}'),
+      currentHeadModule: 'daily_attendance',
+      selectedAdminEmis: null,
+      resetTarget: null,
+      generatedToken: null
+    };
+
+    function savePortalState() {
+      localStorage.setItem('portal_schools', JSON.stringify(portal.schools));
+      localStorage.setItem('portal_head_passes', JSON.stringify(portal.headPasswords));
+      localStorage.setItem('portal_admin_pass', portal.adminPassword);
+      localStorage.setItem('portal_database', JSON.stringify(portal.db));
+    }
+
+    function toggleNavDrawer() {
+      const drawer = document.getElementById('navDrawer');
+      const overlay = document.getElementById('drawerOverlay');
+      drawer.classList.toggle('-translate-x-full');
+      overlay.classList.toggle('hidden');
+    }
+
+    function closeNavDrawer() {
+      document.getElementById('navDrawer').classList.add('-translate-x-full');
+      document.getElementById('drawerOverlay').classList.add('hidden');
+    }
+
+    function render() {
+      const container = document.getElementById('mainContainer');
+      const topBadge = document.getElementById('topUserBadge');
+      const drawerLabel = document.getElementById('drawerSessionLabel');
+      const drawerLogoutBtn = document.getElementById('drawerQuickLogoutBtn');
+      const drawerNav = document.getElementById('drawerNavLinks');
+
+      if (!portal.user) {
+        topBadge.classList.add('hidden');
+        drawerLabel.innerText = "No Active Session";
+        drawerLogoutBtn.classList.add('hidden');
+        drawerNav.innerHTML = `
+          <div class="p-4 text-center text-slate-400">
+            <i class="fa-solid fa-lock text-3xl mb-2 text-slate-300"></i>
+            <p class="text-xs">Please log in to access modules.</p>
+          </div>
+        `;
+        renderLoginView(container);
+        return;
+      }
+
+      topBadge.classList.remove('hidden');
+      drawerLogoutBtn.classList.remove('hidden');
+
+      if (portal.user.role === 'admin') {
+        topBadge.innerHTML = `
+          <span class="text-amber-300 font-bold"><i class="fa-solid fa-shield-halved mr-1"></i> Admin</span>
+          <button onclick="terminateUserSession()" class="text-xs text-red-300 hover:text-white ml-1 font-bold"><i class="fa-solid fa-power-off"></i></button>
+        `;
+        drawerLabel.innerText = "Dr. Muhammad Salim Akhter
